@@ -4,9 +4,45 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@700&display=swap" rel="stylesheet">
   <title>UNO</title>
 </head>
 <body>
+  <div id="account">
+    <div id="login-container">
+      <!-- <div class="oval"></div> -->
+      <div id="login-container-title">
+        <div id="login-title">WELCOME TO </div> 
+          <div id="uno-title" class="uno"> UNO</div>
+      </div>
+      
+      <div id="third-row-container">
+        <div id="login-input-container">
+          <div id="username-container">
+            <input type="text" id="username" placeholder="username">
+          </div>
+          <div id="password-container">
+            <input type="text" id="password" placeholder="password">
+          </div>
+        </div>
+        <div id="button-container">
+          <div id="signup-btn-container">
+            <button id="signup-btn">Sign Up</button>
+          </div>
+          <div id="login-btn-container">
+            <button id="login-btn" >Login</button>
+          </div>
+        </div>
+      </div>
+      <div id="login-container-message">
+        <div id="login-message"> Username taken. Please enter a different username.</div>
+      </div>
+    </div>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="client.js"></script>

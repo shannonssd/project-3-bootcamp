@@ -1,0 +1,85 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: black;
+}
+
+#account {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-container {
+  padding: 15px;
+  width: 60vw;
+  height: 80vh;
+  background-color: #c2c2c2;
+  border-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-container-title {
+  /* background-color: pink; */
+}
+
+#login-title {
+  color: rgb(215, 38, 0);
+  font-size: 100px;
+  text-shadow: -3px 0px 0px black;
+  font-family: "Cabin", sans-serif;
+}
+#uno-title {
+  display: flex;
+  justify-content: center;
+}
+
+.uno {
+  color: #ffee00;
+  font-size: 200px;
+  text-shadow: -7px 1px 0px black;
+  font-family: "Cabin", sans-serif;
+}
+
+#login-container-message {
+  margin-top: 30px;
+}
+
+#login-message {
+  font-family: "Cabin", sans-serif;
+  text-shadow: 1px 1px 0px grey;
+}
+
+#third-row-container {
+  z-index: 4;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+#login-input-container {
+  margin-right: 30px;
+}
+
+#button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+/* 
+.oval {
+  z-index: 1;
+  width: 900px;
+  height: 290px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  -webkit-transform: rotate(130deg);
+} */
