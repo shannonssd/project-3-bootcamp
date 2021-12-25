@@ -91,8 +91,8 @@ body {
 
 #game-title-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
 }
 
 .uno-game-title {
@@ -104,6 +104,7 @@ body {
 
 #opponent-container-1 {
   position: fixed;
+  top: 3%;
   right: 40%;
   display: flex;
   flex-direction: column;
@@ -113,7 +114,7 @@ body {
 #opponent-container-2 {
   position: fixed;
   left: 7%;
-  top: 40%;
+  top: 30%;
   display: flex;
   flex-direction: column;
   max-width: 365px;
@@ -122,7 +123,7 @@ body {
 #opponent-container-3 {
   position: fixed;
   right: 7%;
-  top: 40%;
+  top: 30%;
   display: flex;
   flex-direction: column;
   max-width: 365px;
@@ -192,5 +193,39 @@ body {
 #discard-container {
   position: fixed;
   left: 49%;
-  top: 46%;
+  top: 30%;
+}
+
+#user-container {
+  display: flex;
+  justify-content: center;
+  /* background-color: pink; */
+  position: fixed;
+  width: 100%;
+  height: 40%;
+  bottom: 0%;
+}
+
+#user-board {
+  width: 75%;
+  border-radius: 30px;
+  background-color: rgb(164, 160, 160);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#user-container-message {
+  display: flex;
+  justify-content: center;
+}
+#user-message {
+  color: white;
+  font-family: "Cabin", sans-serif;
+  font-family: "Press Start 2P", cursive;
+}
+
+#user-container-btn {
+  display: flex;
+  justify-content: space-around;
 }
