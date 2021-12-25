@@ -2,9 +2,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  background-color: black;
+  height: 100%;
 }
+
+/*  ------------ 
+--------------------------- LOGIN ------------
+  ------------ */
 
 #account {
   width: 100vw;
@@ -12,13 +15,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgb(213, 211, 211);
 }
 
 #login-container {
   padding: 15px;
   width: 60vw;
   height: 80vh;
-  background-color: #c2c2c2;
   border-radius: 48px;
   display: flex;
   flex-direction: column;
@@ -27,14 +30,17 @@ body {
 }
 
 #login-container-title {
-  /* background-color: pink; */
+  /* display: flex;
+  justify-content: center; */
 }
 
 #login-title {
   color: rgb(215, 38, 0);
-  font-size: 100px;
+  font-size: 80px;
   text-shadow: -3px 0px 0px black;
   font-family: "Cabin", sans-serif;
+  display: flex;
+  justify-content: center;
 }
 #uno-title {
   display: flex;
@@ -43,7 +49,7 @@ body {
 
 .uno {
   color: #ffee00;
-  font-size: 200px;
+  font-size: 180px;
   text-shadow: -7px 1px 0px black;
   font-family: "Cabin", sans-serif;
 }
@@ -73,13 +79,118 @@ body {
   flex-direction: column;
   align-items: flex-end;
 }
-/* 
-.oval {
+
+/*  ------------ 
+--------------------------- GAME ------------
+  ------------ */
+
+#game {
+  background-color: rgb(155, 42, 42);
+  height: 100%;
+}
+
+#game-title-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.uno-game-title {
+  color: #ffee00;
+  font-size: 75px;
+  text-shadow: -7px 1px 0px black;
+  font-family: "Cabin", sans-serif;
+}
+
+#opponent-container-1 {
+  position: fixed;
+  right: 40%;
+  display: flex;
+  flex-direction: column;
+  max-width: 365px;
+}
+
+#opponent-container-2 {
+  position: fixed;
+  left: 7%;
+  top: 40%;
+  display: flex;
+  flex-direction: column;
+  max-width: 365px;
+}
+
+#opponent-container-3 {
+  position: fixed;
+  right: 7%;
+  top: 40%;
+  display: flex;
+  flex-direction: column;
+  max-width: 365px;
+}
+
+.opponent-container-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 365px;
+}
+
+.opponent-card-outer {
+  margin: 2px 0px 5px 0px;
+  margin-right: -10px;
+  height: 100px;
+  width: 50px;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.opponent-card-inner {
+  height: 90px;
+  width: 40px;
+  background-color: red;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
-  width: 900px;
-  height: 290px;
+}
+
+.card-text {
+  min-width: 110px;
+  color: #ffee00;
+  font-size: 24px;
+  text-shadow: -4px 0px 0px black;
+  font-family: "Cabin", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(-90deg);
+  z-index: 0;
+}
+
+.opponent-container-name {
+  display: flex;
+  justify-content: center;
+}
+
+.opponent-name {
+  padding: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(21, 26, 182);
+  font-size: 24px;
+  font-family: "Cabin", sans-serif;
+  background-color: #ffee00;
   border-radius: 50%;
-  background: white;
-  position: absolute;
-  -webkit-transform: rotate(130deg);
-} */
+}
+
+#discard-container {
+  position: fixed;
+  left: 49%;
+  top: 46%;
+}
