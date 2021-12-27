@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/login.css">
+  <link rel="stylesheet" href="/game.css">
+  <link rel="stylesheet" href="/uno-numbers.css">
+  <link rel="stylesheet" href="/uno-skip.css">
+  <link rel="stylesheet" href="/uno-reverse.css">
+  <link rel="stylesheet" href="/uno-draw.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <title>OHNO!</title>
 </head>
 <body>
@@ -184,7 +189,11 @@
       <div id="discard">
         <div class="opponent-card-outer">
           <div class="opponent-card-inner"> 
-            <div class="card-text">OH NO!</div>
+            <div class="card num-9 blue">
+                  <div class="inner">
+                    <div class="mark">9</div>
+                  </div>
+                </div>
           </div>
         </div>
       </div>
@@ -198,11 +207,37 @@
         <div id="user-container-all-cards">
           <div class="user-container-card">
             <div class="user-card-div">
-              <div class="user-card"></div>
+              <!-- <div class="user-card"> -->
+                <div class="card num-3 yellow">
+                  <div class="inner">
+                    <div class="mark">3</div>
+                  </div>
+                </div>
+              <!-- </div> -->
+                <div class="card num-reverse red">
+                  <div class="inner">
+                    <div class="mark-reverse">R</div>
+                  </div>
+                </div>
+                <div class="card num-skip green">
+                  <div class="inner">
+                    <div class="mark-skip">
+                      <div class="skip-green"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card num-draw blue">
+                  <div class="inner">
+                    <div class="mark-draw">
+                      <div class="draw-blue"></div>
+                    </div>
+                  </div>
+                </div>
+            
             </div>
-            <div class="user-play-div">
-              <div class="user-play"></div>
-            </div>
+              <div class="user-play-div">
+                <div class="user-play"></div>
+              </div>
           </div>
         </div>
         <div id="user-container-btn">

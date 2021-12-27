@@ -1,0 +1,77 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#account {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(213, 211, 211);
+}
+
+#login-container {
+  padding: 15px;
+  width: 60vw;
+  height: 80vh;
+  border-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-container-title {
+  /* display: flex;
+  justify-content: center; */
+}
+
+#login-title {
+  color: rgb(215, 38, 0);
+  font-size: 80px;
+  text-shadow: -3px 0px 0px black;
+  font-family: "Cabin", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+#uno-title {
+  display: flex;
+  justify-content: center;
+}
+
+.uno {
+  color: #ffee00;
+  font-size: 180px;
+  text-shadow: -7px 1px 0px black;
+  font-family: "Cabin", sans-serif;
+}
+
+#login-container-message {
+  margin-top: 30px;
+}
+
+#login-message {
+  font-family: "Cabin", sans-serif;
+  text-shadow: 1px 1px 0px grey;
+}
+
+#third-row-container {
+  z-index: 4;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+#login-input-container {
+  margin-right: 30px;
+}
+
+#button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
