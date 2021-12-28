@@ -1,0 +1,87 @@
+.card-small.num-skip:before,
+.card-small.num-skip:after {
+  content: "Skip";
+  font-size: 9px;
+}
+
+.skip-green-small {
+  width: 100px;
+  height: 100px;
+  border: 12px solid #18a849;
+  border-radius: 50%;
+}
+
+.skip-green-small:before {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 13%;
+  background-color: #18a849;
+  position: relative;
+  top: 42%;
+  transform: rotate(-45deg);
+}
+
+.skip-red-small {
+  width: 100px;
+  height: 100px;
+  border: 12px solid #c72a18;
+  border-radius: 50%;
+}
+
+.skip-red-small:before {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 13%;
+  background-color: #c72a18;
+  position: relative;
+  top: 42%;
+  transform: rotate(-45deg);
+}
+
+.skip-blue-small {
+  width: 30px;
+  height: 30px;
+  border: 6px solid #0063b3;
+  border-radius: 50%;
+}
+
+.skip-blue-small:before {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 16%;
+  background-color: #0063b3;
+  position: relative;
+  top: 42%;
+  transform: rotate(-45deg);
+}
+
+.skip-yellow-small {
+  width: 100px;
+  height: 100px;
+  border: 12px solid #e6ca1e;
+  border-radius: 50%;
+}
+
+.skip-yellow-small:before {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 13%;
+  background-color: #e6ca1e;
+  position: relative;
+  top: 42%;
+  transform: rotate(-45deg);
+}
+
+.card-small .mark-skip {
+  display: inline-block;
+  vertical-align: middle;
+  background: #ffffff;
+  margin: auto;
+  padding: 18px 12px;
+  border-radius: 100px 60px / 120px 60px;
+  line-height: 1.4;
+}

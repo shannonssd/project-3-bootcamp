@@ -1,0 +1,171 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:900);
+
+.card-small {
+  width: 70px;
+  height: 110px;
+  float: left;
+  background: #fff;
+  border-radius: 5px;
+  display: table;
+  box-sizing: border-box;
+  padding: 5px;
+  margin: 10px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 46px;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
+    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
+    0 1px 0 #000000, 2px 2px 0 #000000;
+  box-shadow: 0 0 10px #aaaaaa;
+  text-align: center;
+  position: relative;
+}
+
+.card-small .inner {
+  display: table-cell;
+  vertical-align: middle;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.card-small .mark {
+  display: inline-block;
+  vertical-align: middle;
+  background: #ffffff;
+  margin: auto;
+  padding: 8px 22px;
+  border-radius: 100px 60px / 120px 60px;
+  line-height: 1.4;
+}
+
+.card-small:before,
+.card-small:after {
+  display: inline-block;
+  position: absolute;
+  line-height: 0;
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, -1px 1px 0 #000000,
+    1px -1px 0 #000000, 1px 0 0 #000000, -1px 0 0 #000000, 0 -1px 0 #000000,
+    0 1px 0 #000000, 2px 2px 0 #000000;
+}
+
+.card-small:before {
+  top: 15px;
+  left: 10px;
+}
+.card-small:after {
+  bottom: 15px;
+  right: 10px;
+  -webkit-transform: rotate(180deg);
+}
+
+.card-small.blue {
+  color: #0063b3;
+}
+
+.card-small.blue .inner {
+  background: #0063b3;
+}
+
+.card-small.green {
+  color: #18a849;
+}
+
+.card-small.green .inner {
+  background: #18a849;
+}
+
+.card-small.red {
+  color: #c72a18;
+}
+
+.card-small.red .inner {
+  background: #c72a18;
+}
+
+.card-small.yellow {
+  color: #e6ca1e;
+}
+
+.card-small.yellow .inner {
+  background: #e6ca1e;
+}
+
+.card-small.num-0:before,
+.card-small.num-0:after {
+  content: "0";
+}
+
+.card-small.num-1:before,
+.card-small.num-1:after {
+  content: "1";
+}
+
+.card-small.num-2:before,
+.card-small.num-2:after {
+  content: "2";
+}
+
+.card-small.num-3:before,
+.card-small.num-3:after {
+  content: "3";
+}
+
+.card-small.num-4:before,
+.card-small.num-4:after {
+  content: "4";
+}
+
+.card-small.num-5:before,
+.card-small.num-5:after {
+  content: "5";
+}
+
+.card-small.num-6:before,
+.card-small.num-6:after {
+  content: "6";
+}
+
+.card-small.num-7:before,
+.card-small.num-7:after {
+  content: "7";
+}
+
+.card-small.num-8:before,
+.card-small.num-8:after {
+  content: "8";
+}
+
+.card-small.num-9:before,
+.card-small.num-9:after {
+  content: "9";
+}
+
+.card-small.num-6 .mark:after,
+.card-small.num-9 .mark:after {
+  display: block;
+  content: "";
+  position: relative;
+  /* top: -25px; */
+  /* left: 5px; */
+  width: 80%;
+  border: 1px solid #000000;
+  height: 2px;
+  box-shadow: 1px 1px 0 #000000;
+}
+.card-small.num-6.blue .mark:after,
+.card-small.num-9.blue .mark:after {
+  background: #0063b3;
+}
+.card-small.num-6.green .mark:after,
+.card-small.num-9.green .mark:after {
+  background: #18a849;
+}
+.card-small.num-6.red .mark:after,
+.card-small.num-9.red .mark:after {
+  background: #c72a18;
+}
+.card-small.num-6.yellow .mark:after,
+.card-small.num-9.yellow .mark:after {
+  background: #e6ca1e;
+}

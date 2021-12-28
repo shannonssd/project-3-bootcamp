@@ -1,0 +1,163 @@
+.card-small .mark-draw {
+  display: inline-block;
+  vertical-align: middle;
+  background: #ffffff;
+  margin: auto;
+  padding: 40px 30px;
+  border-radius: 100px 60px / 120px 60px;
+  line-height: 1.4;
+}
+
+.card-small.num-draw:before,
+.card-small.num-draw:after {
+  content: "+2";
+  font-size: 12px;
+}
+
+.draw-red {
+  height: 100%;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+}
+.draw-red:before {
+  left: 22px;
+  top: 10px;
+}
+.draw-red:after {
+  top: 30px;
+  left: 7px;
+}
+.draw-red:before,
+.draw-red:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #c72a18;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-red:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #c72a18;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-yellow {
+  height: 100%;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+}
+.draw-yellow:before {
+  left: 22px;
+  top: 10px;
+}
+.draw-yellow:after {
+  top: 30px;
+  left: 7px;
+}
+.draw-yellow:before,
+.draw-yellow:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #e6ca1e;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-yellow:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #e6ca1e;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-green {
+  height: 100%;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+}
+.draw-green:before {
+  left: 22px;
+  top: 10px;
+}
+.draw-green:after {
+  top: 30px;
+  left: 7px;
+}
+.draw-green:before,
+.draw-green:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #18a849;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-green:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #18a849;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-blue {
+  height: 100%;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+}
+.draw-blue:before {
+  left: 22px;
+  top: 10px;
+}
+.draw-blue:after {
+  top: 30px;
+  left: 7px;
+}
+.draw-blue:before,
+.draw-blue:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #0063b3;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}
+
+.draw-blue:after {
+  content: "";
+  display: block;
+  width: 19px;
+  height: 27px;
+  background-color: #0063b3;
+  border-radius: 10%;
+  border: 5px solid white;
+  position: absolute;
+}

@@ -7,9 +7,13 @@
   <link rel="stylesheet" href="/login.css">
   <link rel="stylesheet" href="/game.css">
   <link rel="stylesheet" href="/uno-numbers.css">
+  <link rel="stylesheet" href="/uno-numbers-small.css">
   <link rel="stylesheet" href="/uno-skip.css">
+  <link rel="stylesheet" href="/uno-skip-small.css">
   <link rel="stylesheet" href="/uno-reverse.css">
+  <link rel="stylesheet" href="/uno-reverse-small.css">
   <link rel="stylesheet" href="/uno-draw.css">
+  <link rel="stylesheet" href="/uno-draw-small.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@700&display=swap" rel="stylesheet">
@@ -48,9 +52,6 @@
   </div> -->
   
   <div id="game">
-    <!-- <div id="game-title-container">
-      <div class="uno-game-title"> OHNO!</div>
-    </div> -->
     <div id="opponent-container-1">
       <div class="opponent-container-card">
         <div class="opponent-card-outer">
@@ -189,17 +190,13 @@
     </div> 
 
     <div id="discard-container">
-      <!-- <div id="discard"> -->
-      <div class="opponent-card-outer">
-        <div class="opponent-card-inner"> 
-          <div class="card num-9 blue">
-            <div class="inner">
-              <div class="mark">9</div>
-            </div>
+      <div class="card num-skip blue">
+        <div class="inner">
+          <div class="mark-skip">
+            <div class="skip-blue"></div>
           </div>
         </div>
       </div>
-      <!-- </div> -->
     </div>
 
     <div id="user-container">
@@ -209,39 +206,227 @@
         </div>
         <div id="user-container-all-cards">
           <div class="user-container-card">
-            <div class="user-card-div">
-              <!-- <div class="user-card"> -->
-                <div class="card num-3 yellow">
-                  <div class="inner">
-                    <div class="mark">3</div>
-                  </div>
+            <div class="user-card">
+              <div class="card-small num-8 green">
+                <div class="inner">
+                  <div class="mark">8</div>
                 </div>
-              <!-- </div> -->
-                <div class="card num-reverse red">
-                  <div class="inner">
-                    <div class="mark-reverse">R</div>
-                  </div>
-                </div>
-                <div class="card num-skip blue">
-                  <div class="inner">
-                    <div class="mark-skip">
-                      <div class="skip-blue"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card num-draw green">
-                  <div class="inner">
-                    <div class="mark-draw">
-                      <div class="draw-green"></div>
-                    </div>
-                  </div>
-                </div>
-            
-            </div>
-              <div class="user-play-div">
-                <div class="user-play"></div>
               </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
           </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-reverse yellow">
+                <div class="inner">
+                  <div class="mark-reverse">R</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-skip blue">
+                <div class="inner">
+                  <div class="mark-skip">
+                    <div class="skip-blue-small"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+                
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-draw red">
+                <div class="inner">
+                  <div class="mark-draw">
+                    <div class="draw-red"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-8 green">
+                <div class="inner">
+                  <div class="mark">8</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-reverse yellow">
+                <div class="inner">
+                  <div class="mark-reverse">R</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-skip blue">
+                <div class="inner">
+                  <div class="mark-skip">
+                    <div class="skip-blue-small"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+                
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-draw blue">
+                <div class="inner">
+                  <div class="mark-draw">
+                    <div class="draw-blue"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+          
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-8 green">
+                <div class="inner">
+                  <div class="mark">8</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-reverse yellow">
+                <div class="inner">
+                  <div class="mark-reverse">R</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-skip blue">
+                <div class="inner">
+                  <div class="mark-skip">
+                    <div class="skip-blue-small"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+                
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-draw red">
+                <div class="inner">
+                  <div class="mark-draw">
+                    <div class="draw-red"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-8 green">
+                <div class="inner">
+                  <div class="mark">8</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-reverse yellow">
+                <div class="inner">
+                  <div class="mark-reverse">R</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-skip blue">
+                <div class="inner">
+                  <div class="mark-skip">
+                    <div class="skip-blue-small"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+                
+          <div class="user-container-card">
+            <div class="user-card">
+              <div class="card-small num-draw blue">
+                <div class="inner">
+                  <div class="mark-draw">
+                    <div class="draw-blue"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="user-play-div">
+              <div class="user-play">Play!</div>
+            </div>
+          </div>
+          
         </div>
         <div id="user-container-btn">
           <div id="play-btn-container">
@@ -261,3 +446,37 @@
   <script src="client.js"></script>
 </body>
 </html>
+<!-- 
+DISCARD PILE:
+Normal Number
+<div class="card num-9 blue">
+  <div class="inner">
+    <div class="mark">9</div>
+  </div>
+</div>
+ 
+
+Reverse
+<div class="card num-reverse red">
+  <div class="inner">
+    <div class="mark-reverse">R</div>
+  </div>
+</div>
+
+Skip
+<div class="card num-skip blue">
+  <div class="inner">
+    <div class="mark-skip">
+      <div class="skip-blue"></div>
+    </div>
+  </div>
+</div>
+
+Draw
+<div class="card num-draw green">
+  <div class="inner">
+    <div class="mark-draw">
+      <div class="draw-green"></div>
+    </div>
+  </div>
+</div> -->

@@ -10,17 +10,6 @@ body {
   height: 100%;
 }
 
-#game-title-container {
-  width: 100%;
-}
-
-.uno-game-title {
-  color: #ffee00;
-  font-size: 75px;
-  text-shadow: -7px 1px 0px black;
-  font-family: "Cabin", sans-serif;
-}
-
 #opponent-container-1 {
   position: fixed;
   left: 13%;
@@ -123,7 +112,7 @@ body {
 
 #discard-container {
   width: 100%;
-  height: 40%;
+  height: 34%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -134,12 +123,12 @@ body {
   justify-content: center;
   position: fixed;
   width: 100%;
-  height: 40%;
-  bottom: 0%;
+  height: fit-content;
+  bottom: 1%;
 }
 
 #user-board {
-  width: 75%;
+  width: 90%;
   border-radius: 30px;
   background-color: #b89f5be9;
   border: 6px solid white;
@@ -152,15 +141,73 @@ body {
 #user-container-message {
   display: flex;
   justify-content: center;
+  margin: 4px 0px 4px 0px;
 }
 #user-message {
   color: white;
-  font-size: 29px;
+  font-size: 26px;
   text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
   font-family: "Cabin", sans-serif;
+}
+
+#user-container-all-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.user-container-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-card:hover {
+  transform: scale(1.2);
 }
 
 #user-container-btn {
   display: flex;
   justify-content: space-around;
+}
+
+.user-play {
+  color: white;
+  font-size: 18px;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-family: "Cabin", sans-serif;
+  padding: 1px 0px 7px 0px;
+}
+
+#play-button {
+  background-color: #18a849;
+  outline: 1px solid white;
+  border-radius: 20%;
+  color: white;
+  border-radius: 5%;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  padding: 5px 12px;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+#play-button:hover {
+  background-color: #46ed7e;
+}
+
+#skip-button {
+  background-color: #c72a18;
+  outline: 1px solid white;
+  border-radius: 20%;
+  color: white;
+  border-radius: 5%;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  padding: 5px 12px;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+#skip-button:hover {
+  background-color: #ff0000;
 }
