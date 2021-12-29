@@ -11,7 +11,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(213, 211, 211);
+  background-image: url("uno-pic.jpeg");
 }
 
 #login-container {
@@ -21,7 +21,7 @@ body {
   border-radius: 48px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
@@ -33,10 +33,10 @@ body {
 #login-title {
   color: rgb(215, 38, 0);
   font-size: 80px;
-  text-shadow: -3px 0px 0px black;
   font-family: "Cabin", sans-serif;
   display: flex;
   justify-content: center;
+  text-shadow: 6px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #uno-title {
   display: flex;
@@ -46,8 +46,9 @@ body {
 .uno {
   color: #ffee00;
   font-size: 180px;
-  text-shadow: -7px 1px 0px black;
+  text-shadow: 15px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
   font-family: "Cabin", sans-serif;
+  letter-spacing: 4px;
 }
 
 #login-container-message {
@@ -57,11 +58,14 @@ body {
 #login-message {
   font-family: "Cabin", sans-serif;
   text-shadow: 1px 1px 0px grey;
+  font-size: 25px;
+  color: black;
+  text-shadow: 2px 1px white;
 }
 
 #third-row-container {
   z-index: 4;
-  margin-top: 30px;
+  margin: 100px 0px 150px 0px;
   display: flex;
   flex-direction: row;
 }
@@ -70,8 +74,58 @@ body {
   margin-right: 30px;
 }
 
+#username {
+  border-radius: 5%;
+  font-size: 25px;
+  margin: 0px 38px 28px 0px;
+  font-family: "Cabin", sans-serif;
+  text-shadow: 0px 1px rgb(203, 203, 203);
+}
+
+#password {
+  border-radius: 5%;
+  font-size: 25px;
+  margin-bottom: 8px;
+  font-family: "Cabin", sans-serif;
+  text-shadow: 0px 1px rgb(203, 203, 203);
+}
+
 #button-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+#signup-btn {
+  background-color: #18a849;
+  outline: 1px solid white;
+  border-radius: 20%;
+  color: white;
+  border-radius: 5%;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  /* padding: 5px 5px; */
+  text-align: center;
+  font-size: 25px;
+  margin-bottom: 28px;
+}
+
+#signup-btn:hover {
+  background-color: #46ed7e;
+}
+
+#login-btn {
+  background-color: #0063b3;
+  outline: 1px solid white;
+  border-radius: 20%;
+  color: white;
+  border-radius: 5%;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  /* padding: 5px 5px; */
+  text-align: center;
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+#login-btn:hover {
+  background-color: #008cff;
 }

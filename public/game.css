@@ -6,7 +6,7 @@ body {
 }
 
 #game {
-  background-color: rgb(1, 106, 106);
+  background-image: url("uno-pic.jpeg");
   height: 100%;
 }
 
@@ -41,16 +41,17 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 365px;
+  /* max-width: 365px; */
 }
 
 .opponent-card-outer {
   margin: 2px 0px 5px 0px;
   margin-right: -10px;
   height: 100px;
-  width: 50px;
+  width: 70px;
   background-color: white;
-  border-radius: 8px;
+  border: 2px solid black;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,10 +59,10 @@ body {
 }
 
 .opponent-card-inner {
-  height: 90px;
-  width: 40px;
+  height: 92px;
+  width: 62px;
   background-color: red;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,13 +72,12 @@ body {
 .card-text {
   min-width: 110px;
   color: #ffee00;
-  font-size: 24px;
-  text-shadow: -4px 0px 0px black;
+  font-size: 14px;
+  text-shadow: 2px 1px 1px black;
   font-family: "Cabin", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: rotate(-90deg);
   z-index: 0;
 }
 
