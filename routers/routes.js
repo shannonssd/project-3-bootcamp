@@ -7,7 +7,7 @@
  * ========================================================
  * ========================================================
  */
-const { initGameController, playersData, playerTurnObj } =  require('../controllers/game.js');
+const { initGameController, playersData, gameObj } =  require('../controllers/game.js');
 const db = require('../models/index');
 /*
  * ========================================================
@@ -32,7 +32,7 @@ module.exports = (io, app) => {
     gameController.addUsersSocketId(socket);
     
     // Send game data to client immediately after they connect
-    socket.emit('player turn', playerTurnObj);
+    socket.emit('player turn', gameObj);
    
     // When client tries to sign up, run logic through DB
     socket.on('Sign up', (data) => {

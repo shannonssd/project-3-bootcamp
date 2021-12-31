@@ -63,6 +63,19 @@ const signUpAttempt = () => {
  * ========================================================
  * ========================================================
  * 
+ *    Generate players cards and opponent name displays
+ *
+ * ========================================================
+ * ========================================================
+ */
+const generateCardNameDisplay = (gameObj) => {
+  console.log(gameObj);
+};
+
+/*
+ * ========================================================
+ * ========================================================
+ * 
  *       On click of login button, verify data in DB 
  *             and inform user of outcome
  *
@@ -82,7 +95,7 @@ const loginAttempt = () => {
     socket.emit('Login', data);
 
     // If login successful, show game display
-    socket.on('Login successful', () => {
+    socket.on('Login successful', (gameObj) => {
       username.value = '';
       password.value = '';
 
@@ -91,6 +104,7 @@ const loginAttempt = () => {
       const gameDisplay = document.getElementById('game');
       loginDisplay.style.display = 'none';
       gameDisplay.style.display = 'block';
+      generateCardNameDisplay(gameObj);
     });
 
     // Inform user if username or password was incorrect
@@ -153,18 +167,18 @@ const showBtn = () => {
 };
 
 // Function to alter button visibility based on socket id & users turn
-const alterBtnVisibility = (playerTurnObj) => {
-  if(!(socket.id === playerTurnObj.playersData[playerTurnObj.playerTurn].socketId)) {
+const alterBtnVisibility = (gameObj) => {
+  if(!(socket.id === gameObj.playersData[gameObj.playerTurn].socketId)) {
     console.log('hide')
     hideBtn();
   }
-  if(socket.id === playerTurnObj.playersData[playerTurnObj.playerTurn].socketId) {
+  if(socket.id === gameObj.playersData[gameObj.playerTurn].socketId) {
     console.log('show');
     showBtn();
   }
 };
 
 // On response from server - Alter button visibility based on socket id
-socket.on('player turn', (playerTurnObj) => {
-  alterBtnVisibility(playerTurnObj);
+socket.on('player turn', (gameObj) => {
+  alterBtnVisibility(gameObj);
 });

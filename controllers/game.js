@@ -19,9 +19,10 @@
  */
 // Store all connected players in array
 let playersData = [];
-
+// Store all discard pile cards in array
+let discardCard = [];
 // Global variable to hide / show buttons to users
-let playerTurnObj = {
+let gameObj = {
   playerTurn: 0,
   playersData,
 };
@@ -122,31 +123,53 @@ var makeDeck = () => {
   return cardDeck;
 };
 
-var newDeck = makeDeck();
-var shuffledDeck = shuffleCards(newDeck);
+
 
 /*
  * ========================================================
  * ========================================================
  * 
- *                     Controllers
+ *                 Controller Functions
  *
  * ========================================================
  * ========================================================
  */
 const initGameController = (db) => {
+  const { Op } = db.Sequelize;
+
   // When new user connects, add users socket id to an array
-  const addUsersSocketId = (socket) => {
+  const addUsersSocketId = async (socket) => {
     playersData.push({});
     // Add new players socket id to new index in array
     playersData[playersData.length - 1].socketId = socket.id;
-    // // Deal cards to player
-    // const playerHand = [];
-    // for (let i =0; i < 7; i +=1){
-    //   playerHand.push(shuffledDeck.pop())
-    // }
-    // playersData[playersData.length - 1].playerHand = playerHand;
-    // console.log(playersData[playersData.length - 1].playerHand);
+
+    // When first player connects, do the following:
+    if (playersData.length === 1) {
+      // Deal a new shuffled deck for this game.
+      var newDeck = makeDeck();
+      var cardDeck = shuffleCards(newDeck);
+
+      // Draw card for discard pile
+      discardCard = cardDeck.pop();
+      // Place discard pile card into object
+      gameObj.discardCard = discardCard; 
+
+      // Create new game object to enter into DB
+      const newGame = {
+        gameState: {
+          cardDeck,
+        },
+      };
+
+      try {
+      // Create new game in DB
+      const game = await db.Game.create(newGame);
+      // Add game id to game object to be sent to front-end
+      gameObj.gameId = game.id; 
+      } catch (error) {
+      response.status(500).send(error);
+      }
+    }
   };
 
   // When user tries to signup: 
@@ -193,11 +216,44 @@ const initGameController = (db) => {
     if (checkUser === null) {
       socket.emit('Invalid login');
     } else {
-      // // Inform player if successful and send cookies
-      // player1Id = checkUser.id;
-      // response.cookie('loggedInHash', hashedPassword);
-      // response.cookie('userId', player1Name);
-      socket.emit('Login successful');
+      // Create new entry in join table
+      await db.UserGame.create({
+        gameId: gameObj.gameId,
+        userId: checkUser.id,
+      });
+
+      // Find game in DB to draw cards
+      const game = await db.Game.findByPk(gameObj.gameId);
+
+      // Deal cards to player
+      const playerHand = [];
+      for (let i = 0; i < 7; i += 1){
+        playerHand.push(game.gameState.cardDeck.pop())
+      }
+      // Check for array index matching user socket id and add user's name and new cards to object
+      for (let i = 0; i < gameObj.playersData.length; i += 1) {
+        if (gameObj.playersData[i].socketId === socket.id) {
+          gameObj.playersData[i].username = username;
+          gameObj.playersData[i].playerHand = playerHand;
+        }
+      }
+      // Update cards in DB
+      await game.update({
+        gameState: {
+          cardDeck: game.gameState.cardDeck,
+          gameObj: gameObj,
+        },
+      });
+      
+      // Check for array index matching user socket id and 'hide' cards if it does not match
+      for (let i = 0; i < gameObj.playersData.length; i += 1) {
+        if (!(gameObj.playersData[i].socketId === socket.id)) {
+          gameObj.playersData[i].playerHand = playerHand.length;
+        }
+      }
+
+      // Inform player if successful and send data
+      socket.emit('Login successful', gameObj);
     }
   };
   return {
@@ -209,5 +265,5 @@ const initGameController = (db) => {
 
 exports.initGameController = initGameController;
 exports.playersData = playersData;
-exports.playerTurnObj = playerTurnObj;
+exports.gameObj = gameObj;
 
