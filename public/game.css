@@ -38,7 +38,9 @@ body {
   flex-direction: column;
 }
 
-.opponent-container-card {
+#opponent-container-card-1,
+#opponent-container-card-2,
+#opponent-container-card-3 {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

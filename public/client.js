@@ -1,5 +1,4 @@
 const socket = io();
-
 // ========================================================   LOGIN FRONT-END LOGIC   ========================================================
 /*
  * ========================================================
@@ -68,7 +67,210 @@ const signUpAttempt = () => {
  * ========================================================
  * ========================================================
  */
-const generateCardNameDisplay = (gameObj) => {
+// Genereate opponents cards using DOM
+const createOpponentCard = () => {
+  const outerCardDiv = document.createElement('div');
+  outerCardDiv.classList.add('opponent-card-outer');
+  const innerCardDiv = document.createElement('div');
+  innerCardDiv.classList.add('opponent-card-inner');
+  const cardText = document.createElement('div');
+  cardText.classList.add('card-text');
+  cardText.innerText = 'OH NO!';
+  innerCardDiv.appendChild(cardText);
+  outerCardDiv.appendChild(innerCardDiv);
+};
+
+// Genereate discard pile card using DOM
+const createDiscardCard = (card) => {
+  if (card.rank <= 9) {
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card'); 
+    outerCard.classList.add(`num-${card.rank}`); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark'); 
+    mark.innerText = `${card.rank}`;
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+  } else if (card.rank === 10 && card.category === 'reverse') {
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card'); 
+    outerCard.classList.add('num-reverse'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-reverse'); 
+    mark.innerText = 'R';
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+  } else if (card.rank === 10 && card.category === 'skip') {
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card'); 
+    outerCard.classList.add('num-skip'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-skip'); 
+    const skipColour = document.createElement('div');
+    skipColour.classList.add(`skip-${card.colour}`); 
+    mark.appendChild(skipColour);
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+  } else if (card.rank === 10 && card.category === 'draw') {
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card'); 
+    outerCard.classList.add('num-draw'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-draw'); 
+    const drawColour = document.createElement('div');
+    drawColour.classList.add(`draw-${card.colour}`); 
+    mark.appendChild(drawColour);
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+  }
+};
+
+// Genereate user cards using DOM
+const createUserCard = (card) => {
+  if (card.rank <= 9) {
+    // Card + play message container 
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('user-container-card'); 
+    // Card divs
+    const userCard = document.createElement('div');
+    userCard.classList.add('user-card'); 
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card-small'); 
+    outerCard.classList.add(`num-${card.rank}`); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark'); 
+    mark.innerText = `${card.rank}`;
+    // Play message divs
+    const playContainer = document.createElement('div');
+    playContainer.classList.add('user-play-div'); 
+    const playMessage = document.createElement('div');
+    playMessage.classList.add('user-play'); 
+    playMessage.innerText = "Play!";
+    playMessage.style.display = 'none';
+    // Append card elements
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+    userCard.appendChild(outerCard);
+    cardContainer.appendChild(userCard);
+    // Append play message elements
+    playContainer.appendChild(playMessage);
+    cardContainer.appendChild(playContainer);
+  } else if (card.rank === 10 && card.category === 'reverse') {
+    // Card + play message container 
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('user-container-card'); 
+    // Card divs
+    const userCard = document.createElement('div');
+    userCard.classList.add('user-card'); 
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card-small'); 
+    outerCard.classList.add('num-reverse'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-reverse'); 
+    mark.innerText = 'R';
+    // Play message divs
+    const playContainer = document.createElement('div');
+    playContainer.classList.add('user-play-div'); 
+    const playMessage = document.createElement('div');
+    playMessage.classList.add('user-play'); 
+    playMessage.innerText = "Play!";
+    playMessage.style.display = 'none';
+    // Append card elements
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+    userCard.appendChild(outerCard);
+    cardContainer.appendChild(userCard);
+    // Append play message elements
+    playContainer.appendChild(playMessage);
+    cardContainer.appendChild(playContainer);
+  } else if (card.rank === 10 && card.category === 'skip') {
+    // Card + play message container 
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('user-container-card'); 
+    // Card divs
+    const userCard = document.createElement('div');
+    userCard.classList.add('user-card'); 
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card-small'); 
+    outerCard.classList.add('num-skip'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-skip'); 
+    const skipSmall = document.createElement('div');
+    skipSmall.classList.add(`skip-${card.colour}-small`); 
+    // Play message divs
+    const playContainer = document.createElement('div');
+    playContainer.classList.add('user-play-div'); 
+    const playMessage = document.createElement('div');
+    playMessage.classList.add('user-play'); 
+    playMessage.innerText = "Play!";
+    playMessage.style.display = 'none';
+    // Append card elements
+    mark.appendChild(skipSmall);
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+    userCard.appendChild(outerCard);
+    cardContainer.appendChild(userCard);
+    // Append play message elements
+    playContainer.appendChild(playMessage);
+    cardContainer.appendChild(playContainer);
+  } else if (card.rank === 10 && card.category === 'draw') {
+    // Card + play message container 
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('user-container-card'); 
+    // Card divs
+    const userCard = document.createElement('div');
+    userCard.classList.add('user-card'); 
+    const outerCard = document.createElement('div');
+    outerCard.classList.add('card-small'); 
+    outerCard.classList.add('num-draw'); 
+    outerCard.classList.add(`${card.colour}`); 
+    const inner = document.createElement('div');
+    inner.classList.add('inner'); 
+    const mark = document.createElement('div');
+    mark.classList.add('mark-draw'); 
+    const drawSmall = document.createElement('div');
+    drawSmall.classList.add(`draw-${card.colour}-small`); 
+    // Play message divs
+    const playContainer = document.createElement('div');
+    playContainer.classList.add('user-play-div'); 
+    const playMessage = document.createElement('div');
+    playMessage.classList.add('user-play'); 
+    playMessage.innerText = "Play!";
+    playMessage.style.display = 'none';
+    // Append card elements
+    mark.appendChild(drawSmall);
+    inner.appendChild(mark);
+    outerCard.appendChild(inner);
+    userCard.appendChild(outerCard);
+    cardContainer.appendChild(userCard);
+    // Append play message elements
+    playContainer.appendChild(playMessage);
+    cardContainer.appendChild(playContainer);
+  }
+};
+
+const generateCardNameOnLogin = (gameObj) => {
   console.log(gameObj);
 };
 
@@ -104,7 +306,7 @@ const loginAttempt = () => {
       const gameDisplay = document.getElementById('game');
       loginDisplay.style.display = 'none';
       gameDisplay.style.display = 'block';
-      generateCardNameDisplay(gameObj);
+      generateCardNameOnLogin(gameObj);
     });
 
     // Inform user if username or password was incorrect

@@ -9,6 +9,7 @@
  */
 const { initGameController, playersData, gameObj } =  require('../controllers/game.js');
 const db = require('../models/index');
+
 /*
  * ========================================================
  * ========================================================
@@ -41,7 +42,6 @@ module.exports = (io, app) => {
 
     // When client tries to login, verify details through DB
     socket.on('Login', (data) => {
-      console.log(data);
       gameController.loginAttemptDb(socket, data);
     });
 
