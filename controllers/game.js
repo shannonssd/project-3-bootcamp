@@ -2,6 +2,16 @@
  * ========================================================
  * ========================================================
  *
+ *                    Imports
+ *
+ * ========================================================
+ * ========================================================
+ */  const getHash = require('../hashing.js');
+
+/*
+ * ========================================================
+ * ========================================================
+ *
  *       Global variables for player and game data
  *
  * ========================================================
@@ -19,13 +29,12 @@ let playerTurnObj = {
 /*
  * ========================================================
  * ========================================================
- *
+ * 
  *            Generate and shuffle card deck
  *
  * ========================================================
  * ========================================================
  */
-
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 var getRandomIndex = function (max) {
   return Math.floor(Math.random() * max);
@@ -51,6 +60,7 @@ var shuffleCards = function (cardDeck) {
   // Return the shuffled deck
   return cardDeck;
 };
+
 var makeDeck = () => {
   // Initialise an empty deck array
   var cardDeck = [];
@@ -111,36 +121,89 @@ var makeDeck = () => {
   // Return the completed card deck
   return cardDeck;
 };
+
 var newDeck = makeDeck();
 var shuffledDeck = shuffleCards(newDeck);
-// console.log(shuffledDeck);
 
-const initGameController = () => {
 /*
  * ========================================================
  * ========================================================
- *
- *         When new user connects do the following:
+ * 
+ *                     Controllers
  *
  * ========================================================
  * ========================================================
  */
-  const createNewUser = (socket) => {
+const initGameController = (db) => {
+  // When new user connects, add users socket id to an array
+  const addUsersSocketId = (socket) => {
     playersData.push({});
     // Add new players socket id to new index in array
     playersData[playersData.length - 1].socketId = socket.id;
-    // Deal cards to player
-    const playerHand = [];
-    for (let i =0; i < 7; i +=1){
-      playerHand.push(shuffledDeck.pop())
+    // // Deal cards to player
+    // const playerHand = [];
+    // for (let i =0; i < 7; i +=1){
+    //   playerHand.push(shuffledDeck.pop())
+    // }
+    // playersData[playersData.length - 1].playerHand = playerHand;
+    // console.log(playersData[playersData.length - 1].playerHand);
+  };
+
+  // When user tries to signup: 
+  const signUpAttemptDb = async (socket, data) => {
+    const { username } = data;
+    const { password } = data;
+    const hashedPassword = getHash(password);
+
+    // Check if username already exists
+    const checkIfUserExists = await db.User.findOne({
+      where: {
+        username,
+      },
+    });
+
+    // If no such username in database, create new one
+    if (checkIfUserExists === null) {
+      await db.User.create({
+        username,
+        password: hashedPassword,
+      });
+      socket.emit('Sign up success');
+    } else {
+      // Else inform user that username already exists
+      socket.emit('User exists');
     }
-    playersData[playersData.length - 1].playerHand = playerHand;
+  };
 
-    console.log(playersData[playersData.length - 1].playerHand);
-  }
+  // When user tries to login: 
+  const loginAttemptDb = async (socket, data) => {
+    const { username } = data;
+    const { password } = data;
+    const hashedPassword = getHash(password);
 
+    // Check if username exists in DB
+    const checkUser = await db.User.findOne({
+      where: {
+        username,
+        password: hashedPassword,
+      },
+    });
+
+    // If no such username + password combo, inform user
+    if (checkUser === null) {
+      socket.emit('Invalid login');
+    } else {
+      // // Inform player if successful and send cookies
+      // player1Id = checkUser.id;
+      // response.cookie('loggedInHash', hashedPassword);
+      // response.cookie('userId', player1Name);
+      socket.emit('Login successful');
+    }
+  };
   return {
-    createNewUser,
+    addUsersSocketId,
+    signUpAttemptDb,
+    loginAttemptDb,
   };
 };
 

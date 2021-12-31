@@ -8,6 +8,7 @@ body {
 #game {
   background-image: url("uno-pic.jpeg");
   height: 100%;
+  display: none;
 }
 
 #opponent-container-1 {
