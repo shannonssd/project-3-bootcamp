@@ -162,14 +162,14 @@ const initGameController = (db) => {
       };
 
       try {
-      // Create new game in DB
-      const game = await db.Game.create(newGame);
-      // Add game id to game object to be sent to front-end
-      gameObj.gameId = game.id; 
+        // Create new game in DB
+        const game = await db.Game.create(newGame);
+        // Add game id to game object 
+        gameObj.gameId = game.id; 
       } catch (error) {
-      response.status(500).send(error);
+        response.status(500).send(error);
       }
-    }
+    } 
   };
 
   // When user tries to signup: 
@@ -215,6 +215,7 @@ const initGameController = (db) => {
     // If no such username + password combo, inform user
     if (checkUser === null) {
       socket.emit('Invalid login');
+      // If login successful:
     } else {
       // Create new entry in join table
       await db.UserGame.create({
@@ -230,6 +231,8 @@ const initGameController = (db) => {
       for (let i = 0; i < 7; i += 1){
         playerHand.push(game.gameState.cardDeck.pop())
       }
+
+      // Create new variable for use on client-side to determine how many players opponent cards to create display for
       let playersLoggedIn = 'playersLoggedIn';
       // Store num of logged in players
       if (playersLoggedIn in gameObj) {
@@ -238,38 +241,46 @@ const initGameController = (db) => {
       // Else, initialise count of this card name to 1
       else {
         gameObj[playersLoggedIn] = 1;
-  }
-      // Check for array index matching user socket id and add user's name and new cards to object
+      }
+
+      // Check for array index matching user socket id and add user's name and cards to object
       for (let i = 0; i < gameObj.playersData.length; i += 1) {
         if (gameObj.playersData[i].socketId === socket.id) {
           gameObj.playersData[i].username = username;
           gameObj.playersData[i].playerHand = playerHand;
         }
       }
+
       // Update cards in DB before hiding opponents cards 
       await game.update({
         gameState: {
           cardDeck: game.gameState.cardDeck,
           gameObj: gameObj,
-        },
+        }, 
+        returning: true,
       });
-      
+
+      // Create new object so that data can be hidden without affecting data in server
+      let hiddenGameObj =  JSON.parse(JSON.stringify(gameObj));
+      console.log(hiddenGameObj);
       // Check for array index matching user socket id and 'hide' cards if it does not match
-      for (let i = 0; i < gameObj.playersData.length; i += 1) {
-        if (!(gameObj.playersData[i].socketId === socket.id)) {
-          gameObj.playersData[i].playerHand = playerHand.length;
+      for (let j = 0; j < hiddenGameObj.playersLoggedIn; j += 1) {
+        if (!(hiddenGameObj.playersData[j].socketId === socket.id)) {
+          hiddenGameObj.playersData[j].playerHand = hiddenGameObj.playersData[j].playerHand.length;
         }
       }
       // Inform player if successful and send data - to generate user card display
-      socket.emit('Login successful', gameObj);
+      socket.emit('Login successful', hiddenGameObj);
 
+      // Create new object so that data can be hidden without affecting data in server
+      let hiddenGameObjAll =  JSON.parse(JSON.stringify(gameObj));
       // Modify object to reflect number of each players cards
-      for (let i = 0; i < gameObj.playersData.length; i += 1) {
-        gameObj.playersData[i].playerHand = gameObj.playersData[i].playerHand.length;
+      for (let k = 0; k < hiddenGameObjAll.playersLoggedIn; k += 1) {
+        hiddenGameObjAll.playersData[k].playerHand = hiddenGameObjAll.playersData[k].playerHand.length;
       }
       // Inform ALL player if there is a new login - to generate opponent card display
-      socket.broadcast.emit('New login', gameObj);
-      socket.emit('New login', gameObj);
+      socket.broadcast.emit('New login', hiddenGameObjAll);
+      socket.emit('New login', hiddenGameObjAll);
     }
   };
   return {
@@ -280,6 +291,5 @@ const initGameController = (db) => {
 };
 
 exports.initGameController = initGameController;
-exports.playersData = playersData;
-exports.gameObj = gameObj;
+
 

@@ -1,61 +1,48 @@
 const socket = io();
-// ========================================================   LOGIN FRONT-END LOGIC   ========================================================
+// ========================================================   GAME FRONT-END LOGIC   ========================================================
 /*
  * ========================================================
  * ========================================================
  *
- *         Global variables for login HTML elements
+ *         Global variables for game HTML elements
  *
  * ========================================================
  * ========================================================
  */
-let username = '';
-let password = '';
-const signUpButton = document.getElementById('signup-btn');
-const loginButton = document.getElementById('login-btn');
+// let currentGame = null;
+const playButton = document.getElementById('play-button');
+const skipButton = document.getElementById('skip-button');
 
 /*
  * ========================================================
  * ========================================================
- * 
- *      On click of sign up button, verify data in DB 
- *              and inform user of outcome
+ *
+ *      Show / Hide game buttons based on players turn
  *
  * ========================================================
  * ========================================================
  */
-const signUpAttempt = () => {
-  username = document.getElementById('username');
-  password = document.getElementById('password');
+// Hide buttons if it is not player's turn 
+const hideBtn = () => {
+  playButton.style.display = 'none';
+  skipButton.style.display = 'none';
+};
+// Show buttons if it is player's turn 
+const showBtn = () => {
+  playButton.style.display = 'block';
+  skipButton.style.display = 'block';
+};
 
-  const data = {
-    username: username.value,
-    password: password.value,
-  };
-
-  try {
-    // Send user sign up data to server for verification and creation
-    socket.emit('Sign up', data);
-
-    // Inform user if sign up successful
-    socket.on('Sign up success', () => {
-      username.value = '';
-      password.value = '';
-      const loginMessage = document.getElementById('login-message');
-      loginMessage.innerText = 'Sign up successful, please login!';
-    });
-
-    // Inform user if username already exists
-    socket.on('User exists', () => {
-      username.value = '';
-      password.value = '';
-      const loginMessage = document.getElementById('login-message');
-      loginMessage.innerText = 'Username taken. Please try a different username.';
-    });
-  } catch(error)  {
-    // handle error
-    console.log('Error:', error);
-  };
+// Function to alter button visibility based on socket id & users turn
+const alterBtnVisibility = (gameObj) => {
+  if(!(socket.id === gameObj.playersData[gameObj.playerTurn].socketId)) {
+    console.log('hide')
+    hideBtn();
+  }
+  if(socket.id === gameObj.playersData[gameObj.playerTurn].socketId) {
+    console.log('show');
+    showBtn();
+  }
 };
 
 /*
@@ -334,54 +321,143 @@ const generateDiscardAndUserCards = (gameObj) => {
 };
 
 const generateOpponentCardsAndName = (gameObj) => {
-  if (gameObj.playersLoggedIn > 1) {
-    const allPlayerHandsArr = [];
-    let opponentHandsInOrder = [];
-    const allPlayerNamesArr = [];
-    let opponentNamesInOrder = [];
+  // Inform players that they need to wait for 4 players
+  const userMessage = document.getElementById('user-message');
+  userMessage.innerText = "Please wait for more players to join!";
+  // Arrays to change position and store opponents names and card hands
+  const allPlayerHandsArr = [];
+  let opponentHandsInOrder = [];
+  const allPlayerNamesArr = [];
+  let opponentNamesInOrder = [];
 
-    for (let i = 0; i < gameObj.playersLoggedIn; i += 1){
-      allPlayerHandsArr.push(gameObj.playersData[i].playerHand);
-      allPlayerNamesArr.push(gameObj.playersData[i].username);
-    }
+  for (let i = 0; i < gameObj.playersLoggedIn; i += 1){
+    allPlayerHandsArr.push(gameObj.playersData[i].playerHand);
+    allPlayerNamesArr.push(gameObj.playersData[i].username);
+  }
 
-    for (let j = 0; j < allPlayerHandsArr.length; j += 1){
-      if (gameObj.playersData[j].socketId === socket.id) {
-        const index = j;
-        const numOfIndexToSplice = allPlayerHandsArr.length - index;
-        const opponentCardsToMove = allPlayerHandsArr.splice(index, numOfIndexToSplice);
-        const opponentNamesToMove = allPlayerNamesArr.splice(index, numOfIndexToSplice);
-        opponentHandsInOrder = [...opponentCardsToMove, ...allPlayerHandsArr];
-        opponentNamesInOrder = [...opponentNamesToMove, ...allPlayerNamesArr];
-      }
-    }
-
-    const opponentContainerCard1 = document.getElementById('opponent-container-card-1');
-
-    const opponentContainerCard2 = document.getElementById('opponent-container-card-2');
-
-    const opponentContainerCard3 = document.getElementById('opponent-container-card-3');
-
-    const opponentName1 = document.querySelector('.opponent-name1');
-    const opponentCardCount1 = document.querySelector('.opponent-card-count1');
-
-    const opponentName2 = document.querySelector('.opponent-name2');
-    const opponentCardCount2 = document.querySelector('.opponent-card-count2');
-
-    const opponentName3 = document.querySelector('.opponent-name3');
-    const opponentCardCount3 = document.querySelector('.opponent-card-count3');
-
-    if (gameObj.playersLoggedIn === 2) {
-      // Generate opponents cards
-      for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
-        opponentContainerCard1.appendChild(createOpponentCard()) 
-      }
-      opponentName1.innerText = `${opponentNamesInOrder[1]}`
-      opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+  for (let j = 0; j < allPlayerHandsArr.length; j += 1){
+    if (gameObj.playersData[j].socketId === socket.id) {
+      const index = j;
+      const numOfIndexToSplice = allPlayerHandsArr.length - index;
+      const opponentCardsToMove = allPlayerHandsArr.splice(index, numOfIndexToSplice);
+      const opponentNamesToMove = allPlayerNamesArr.splice(index, numOfIndexToSplice);
+      opponentHandsInOrder = [...opponentCardsToMove, ...allPlayerHandsArr];
+      opponentNamesInOrder = [...opponentNamesToMove, ...allPlayerNamesArr];
     }
   }
+
+  const opponentContainerCard1 = document.getElementById('opponent-container-card-1');
+
+  const opponentContainerCard2 = document.getElementById('opponent-container-card-2');
+
+  const opponentContainerCard3 = document.getElementById('opponent-container-card-3');
+
+  const opponentName1 = document.querySelector('.opponent-name1');
+  const opponentCardCount1 = document.querySelector('.opponent-card-count1');
+
+  const opponentName2 = document.querySelector('.opponent-name2');
+  const opponentCardCount2 = document.querySelector('.opponent-card-count2');
+
+  const opponentName3 = document.querySelector('.opponent-name3');
+  const opponentCardCount3 = document.querySelector('.opponent-card-count3');
+
+  // Once 4 players have joined, show opponent names and no of cards to everyone
+  if (gameObj.playersLoggedIn === 4) {
+    // Remove waiting message when 4th player logs in
+    userMessage.innerText = '';
+    // Generate opponents cards- Next player:
+    for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+      opponentContainerCard1.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i > 6) {
+        break;
+      }
+    }
+    // Generate opponents cards- 3rd player:
+    for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
+      opponentContainerCard2.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i > 6) {
+        break;
+      }
+    } 
+    // Generate opponents cards- 4th player:
+    for (let i = 0; i < opponentHandsInOrder[3]; i += 1){
+      opponentContainerCard3.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i > 6) {
+        break;
+      }
+    } 
+    // Display opponents names and number of cards
+    opponentName1.innerText = `${opponentNamesInOrder[1]}`
+    opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+    opponentName2.innerText = `${opponentNamesInOrder[2]}`
+    opponentCardCount2.innerText = `Cards: ${opponentHandsInOrder[2]}`;
+    opponentName3.innerText = `${opponentNamesInOrder[3]}`
+    opponentCardCount3.innerText = `Cards: ${opponentHandsInOrder[3]}`;
+  } 
 };
 
+
+// ========================================================   LOGIN FRONT-END LOGIC   ========================================================
+/*
+ * ========================================================
+ * ========================================================
+ *
+ *         Global variables for login HTML elements
+ *
+ * ========================================================
+ * ========================================================
+ */
+let username = '';
+let password = '';
+const signUpButton = document.getElementById('signup-btn');
+const loginButton = document.getElementById('login-btn');
+
+/*
+ * ========================================================
+ * ========================================================
+ * 
+ *      On click of sign up button, verify data in DB 
+ *              and inform user of outcome
+ *
+ * ========================================================
+ * ========================================================
+ */
+const signUpAttempt = () => {
+  username = document.getElementById('username');
+  password = document.getElementById('password');
+
+  const data = {
+    username: username.value,
+    password: password.value,
+  };
+
+  try {
+    // Send user sign up data to server for verification and creation
+    socket.emit('Sign up', data);
+
+    // Inform user if sign up successful
+    socket.on('Sign up success', () => {
+      username.value = '';
+      password.value = '';
+      const loginMessage = document.getElementById('login-message');
+      loginMessage.innerText = 'Sign up successful, please login!';
+    });
+
+    // Inform user if username already exists
+    socket.on('User exists', () => {
+      username.value = '';
+      password.value = '';
+      const loginMessage = document.getElementById('login-message');
+      loginMessage.innerText = 'Username taken. Please try a different username.';
+    });
+  } catch(error)  {
+    // handle error
+    console.log('Error:', error);
+  };
+};
 
 /*
  * ========================================================
@@ -415,7 +491,10 @@ const loginAttempt = () => {
       const gameDisplay = document.getElementById('game');
       loginDisplay.style.display = 'none';
       gameDisplay.style.display = 'block';
+      // On response from server - Alter button visibility based on socket id
+      alterBtnVisibility(gameObj)
       generateDiscardAndUserCards(gameObj);
+      // generateOpponentCardsAndName(gameObj);
     });
 
     socket.on('New login', (gameObj) => {
@@ -435,6 +514,7 @@ const loginAttempt = () => {
   };
 };
 
+
 /*
  * ========================================================
  * ========================================================
@@ -446,54 +526,3 @@ const loginAttempt = () => {
  */
 signUpButton.addEventListener('click', signUpAttempt);
 loginButton.addEventListener('click', loginAttempt);
-
-// ========================================================   GAME FRONT-END LOGIC   ========================================================
-/*
- * ========================================================
- * ========================================================
- *
- *         Global variables for game HTML elements
- *
- * ========================================================
- * ========================================================
- */
-// let currentGame = null;
-const playButton = document.getElementById('play-button');
-const skipButton = document.getElementById('skip-button');
-
-/*
- * ========================================================
- * ========================================================
- *
- *      Show / Hide game buttons based on players turn
- *
- * ========================================================
- * ========================================================
- */
-// Hide buttons if it is not player's turn 
-const hideBtn = () => {
-  playButton.style.display = 'none';
-  skipButton.style.display = 'none';
-};
-// Show buttons if it is player's turn 
-const showBtn = () => {
-  playButton.style.display = 'block';
-  skipButton.style.display = 'block';
-};
-
-// Function to alter button visibility based on socket id & users turn
-const alterBtnVisibility = (gameObj) => {
-  if(!(socket.id === gameObj.playersData[gameObj.playerTurn].socketId)) {
-    console.log('hide')
-    hideBtn();
-  }
-  if(socket.id === gameObj.playersData[gameObj.playerTurn].socketId) {
-    console.log('show');
-    showBtn();
-  }
-};
-
-// On response from server - Alter button visibility based on socket id
-socket.on('player turn', (gameObj) => {
-  alterBtnVisibility(gameObj);
-});

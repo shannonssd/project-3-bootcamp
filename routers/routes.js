@@ -2,12 +2,12 @@
  * ========================================================
  * ========================================================
  *
- *    Import logic and data for various socket 'routes'
+ *    Import controller and DB for various socket 'routes'
  *
  * ========================================================
  * ========================================================
  */
-const { initGameController, playersData, gameObj } =  require('../controllers/game.js');
+const { initGameController } =  require('../controllers/game.js');
 const db = require('../models/index');
 
 /*
@@ -31,9 +31,6 @@ module.exports = (io, app) => {
   io.on('connection', (socket) => {
     // Add users socket id to an array
     gameController.addUsersSocketId(socket);
-    
-    // Send game data to client immediately after they connect
-    socket.emit('player turn', gameObj);
    
     // When client tries to sign up, run logic through DB
     socket.on('Sign up', (data) => {
