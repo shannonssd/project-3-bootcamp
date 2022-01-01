@@ -230,6 +230,15 @@ const initGameController = (db) => {
       for (let i = 0; i < 7; i += 1){
         playerHand.push(game.gameState.cardDeck.pop())
       }
+      let playersLoggedIn = 'playersLoggedIn';
+      // Store num of logged in players
+      if (playersLoggedIn in gameObj) {
+        gameObj[playersLoggedIn] += 1;
+      }
+      // Else, initialise count of this card name to 1
+      else {
+        gameObj[playersLoggedIn] = 1;
+  }
       // Check for array index matching user socket id and add user's name and new cards to object
       for (let i = 0; i < gameObj.playersData.length; i += 1) {
         if (gameObj.playersData[i].socketId === socket.id) {
@@ -237,7 +246,7 @@ const initGameController = (db) => {
           gameObj.playersData[i].playerHand = playerHand;
         }
       }
-      // Update cards in DB
+      // Update cards in DB before hiding opponents cards 
       await game.update({
         gameState: {
           cardDeck: game.gameState.cardDeck,
@@ -251,9 +260,16 @@ const initGameController = (db) => {
           gameObj.playersData[i].playerHand = playerHand.length;
         }
       }
-
-      // Inform player if successful and send data
+      // Inform player if successful and send data - to generate user card display
       socket.emit('Login successful', gameObj);
+
+      // Modify object to reflect number of each players cards
+      for (let i = 0; i < gameObj.playersData.length; i += 1) {
+        gameObj.playersData[i].playerHand = gameObj.playersData[i].playerHand.length;
+      }
+      // Inform ALL player if there is a new login - to generate opponent card display
+      socket.broadcast.emit('New login', gameObj);
+      socket.emit('New login', gameObj);
     }
   };
   return {

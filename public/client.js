@@ -78,10 +78,12 @@ const createOpponentCard = () => {
   cardText.innerText = 'OH NO!';
   innerCardDiv.appendChild(cardText);
   outerCardDiv.appendChild(innerCardDiv);
+  return outerCardDiv;
 };
 
 // Genereate discard pile card using DOM
 const createDiscardCard = (card) => {
+  const discardContainer = document.getElementById('discard-container');
   if (card.rank <= 9) {
     const outerCard = document.createElement('div');
     outerCard.classList.add('card'); 
@@ -94,6 +96,7 @@ const createDiscardCard = (card) => {
     mark.innerText = `${card.rank}`;
     inner.appendChild(mark);
     outerCard.appendChild(inner);
+    discardContainer.appendChild(outerCard);
   } else if (card.rank === 10 && card.category === 'reverse') {
     const outerCard = document.createElement('div');
     outerCard.classList.add('card'); 
@@ -106,6 +109,7 @@ const createDiscardCard = (card) => {
     mark.innerText = 'R';
     inner.appendChild(mark);
     outerCard.appendChild(inner);
+    discardContainer.appendChild(outerCard);
   } else if (card.rank === 10 && card.category === 'skip') {
     const outerCard = document.createElement('div');
     outerCard.classList.add('card'); 
@@ -120,6 +124,7 @@ const createDiscardCard = (card) => {
     mark.appendChild(skipColour);
     inner.appendChild(mark);
     outerCard.appendChild(inner);
+    discardContainer.appendChild(outerCard);
   } else if (card.rank === 10 && card.category === 'draw') {
     const outerCard = document.createElement('div');
     outerCard.classList.add('card'); 
@@ -134,11 +139,30 @@ const createDiscardCard = (card) => {
     mark.appendChild(drawColour);
     inner.appendChild(mark);
     outerCard.appendChild(inner);
+    discardContainer.appendChild(outerCard);
   }
 };
+// Global variable to give each play message class unique name
+let playMessageCount = 0;
+
+// Global variable to store card that user wants to play
+const userCardToPlay = [];
+// When user clicks a card, store / remove card from global array + show/ hide 'play!' message under card
+const cardClick = (playMessageCount) => {
+  const playMessageDisplay = document.getElementById(`user-play${playMessageCount}`);
+  if(userCardToPlay.length === 0) {
+    playMessageDisplay.style.display = 'block';
+    // ########## .slice() card to be played
+  } else {
+    playMessageDisplay.style.display = 'none';
+    // ########## put card back at index????
+  }
+}; 
+
 
 // Genereate user cards using DOM
 const createUserCard = (card) => {
+  const allCardContainer = document.getElementById('user-container-all-cards');
   if (card.rank <= 9) {
     // Card + play message container 
     const cardContainer = document.createElement('div');
@@ -159,7 +183,7 @@ const createUserCard = (card) => {
     const playContainer = document.createElement('div');
     playContainer.classList.add('user-play-div'); 
     const playMessage = document.createElement('div');
-    playMessage.classList.add('user-play'); 
+    playMessage.classList.add(`user-play${playMessageCount}`); 
     playMessage.innerText = "Play!";
     playMessage.style.display = 'none';
     // Append card elements
@@ -170,6 +194,12 @@ const createUserCard = (card) => {
     // Append play message elements
     playContainer.appendChild(playMessage);
     cardContainer.appendChild(playContainer);
+    userCard.addEventListener('click', () => { 
+      cardClick(playMessageCount); 
+    });
+    playMessageCount += 1;
+    allCardContainer.appendChild(cardContainer);
+
   } else if (card.rank === 10 && card.category === 'reverse') {
     // Card + play message container 
     const cardContainer = document.createElement('div');
@@ -190,7 +220,7 @@ const createUserCard = (card) => {
     const playContainer = document.createElement('div');
     playContainer.classList.add('user-play-div'); 
     const playMessage = document.createElement('div');
-    playMessage.classList.add('user-play'); 
+    playMessage.classList.add(`user-play${playMessageCount}`);  
     playMessage.innerText = "Play!";
     playMessage.style.display = 'none';
     // Append card elements
@@ -201,6 +231,12 @@ const createUserCard = (card) => {
     // Append play message elements
     playContainer.appendChild(playMessage);
     cardContainer.appendChild(playContainer);
+    userCard.addEventListener('click', () => { 
+      cardClick(playMessageCount); 
+    });
+    playMessageCount += 1;
+    allCardContainer.appendChild(cardContainer);
+
   } else if (card.rank === 10 && card.category === 'skip') {
     // Card + play message container 
     const cardContainer = document.createElement('div');
@@ -222,7 +258,7 @@ const createUserCard = (card) => {
     const playContainer = document.createElement('div');
     playContainer.classList.add('user-play-div'); 
     const playMessage = document.createElement('div');
-    playMessage.classList.add('user-play'); 
+    playMessage.classList.add(`user-play${playMessageCount}`);  
     playMessage.innerText = "Play!";
     playMessage.style.display = 'none';
     // Append card elements
@@ -234,6 +270,12 @@ const createUserCard = (card) => {
     // Append play message elements
     playContainer.appendChild(playMessage);
     cardContainer.appendChild(playContainer);
+    userCard.addEventListener('click', () => { 
+      cardClick(playMessageCount); 
+    });
+    playMessageCount += 1;
+    allCardContainer.appendChild(cardContainer);
+
   } else if (card.rank === 10 && card.category === 'draw') {
     // Card + play message container 
     const cardContainer = document.createElement('div');
@@ -255,7 +297,7 @@ const createUserCard = (card) => {
     const playContainer = document.createElement('div');
     playContainer.classList.add('user-play-div'); 
     const playMessage = document.createElement('div');
-    playMessage.classList.add('user-play'); 
+    playMessage.classList.add(`user-play${playMessageCount}`);  
     playMessage.innerText = "Play!";
     playMessage.style.display = 'none';
     // Append card elements
@@ -267,12 +309,79 @@ const createUserCard = (card) => {
     // Append play message elements
     playContainer.appendChild(playMessage);
     cardContainer.appendChild(playContainer);
+    userCard.addEventListener('click', () => { 
+      cardClick(playMessageCount); 
+    });
+    playMessageCount += 1;
+    allCardContainer.appendChild(cardContainer);
   }
 };
 
-const generateCardNameOnLogin = (gameObj) => {
-  console.log(gameObj);
+const generateDiscardAndUserCards = (gameObj) => {
+  // Generate and append discard pile card
+  createDiscardCard(gameObj.discardCard);
+  let playerHand = [];
+  // Find users cards in object
+  for (let i = 0; i < gameObj.playersData.length; i += 1) {
+    if (gameObj.playersData[i].socketId === socket.id) {
+      playerHand = gameObj.playersData[i].playerHand;
+    }
+  }
+  // Generate and append user cards
+  for (let j = 0; j < playerHand.length; j += 1){
+    createUserCard(playerHand[j]);
+  }
 };
+
+const generateOpponentCardsAndName = (gameObj) => {
+  if (gameObj.playersLoggedIn > 1) {
+    const allPlayerHandsArr = [];
+    let opponentHandsInOrder = [];
+    const allPlayerNamesArr = [];
+    let opponentNamesInOrder = [];
+
+    for (let i = 0; i < gameObj.playersLoggedIn; i += 1){
+      allPlayerHandsArr.push(gameObj.playersData[i].playerHand);
+      allPlayerNamesArr.push(gameObj.playersData[i].username);
+    }
+
+    for (let j = 0; j < allPlayerHandsArr.length; j += 1){
+      if (gameObj.playersData[j].socketId === socket.id) {
+        const index = j;
+        const numOfIndexToSplice = allPlayerHandsArr.length - index;
+        const opponentCardsToMove = allPlayerHandsArr.splice(index, numOfIndexToSplice);
+        const opponentNamesToMove = allPlayerNamesArr.splice(index, numOfIndexToSplice);
+        opponentHandsInOrder = [...opponentCardsToMove, ...allPlayerHandsArr];
+        opponentNamesInOrder = [...opponentNamesToMove, ...allPlayerNamesArr];
+      }
+    }
+
+    const opponentContainerCard1 = document.getElementById('opponent-container-card-1');
+
+    const opponentContainerCard2 = document.getElementById('opponent-container-card-2');
+
+    const opponentContainerCard3 = document.getElementById('opponent-container-card-3');
+
+    const opponentName1 = document.querySelector('.opponent-name1');
+    const opponentCardCount1 = document.querySelector('.opponent-card-count1');
+
+    const opponentName2 = document.querySelector('.opponent-name2');
+    const opponentCardCount2 = document.querySelector('.opponent-card-count2');
+
+    const opponentName3 = document.querySelector('.opponent-name3');
+    const opponentCardCount3 = document.querySelector('.opponent-card-count3');
+
+    if (gameObj.playersLoggedIn === 2) {
+      // Generate opponents cards
+      for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+        opponentContainerCard1.appendChild(createOpponentCard()) 
+      }
+      opponentName1.innerText = `${opponentNamesInOrder[1]}`
+      opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+    }
+  }
+};
+
 
 /*
  * ========================================================
@@ -300,13 +409,17 @@ const loginAttempt = () => {
     socket.on('Login successful', (gameObj) => {
       username.value = '';
       password.value = '';
-
+      console.log(gameObj);
       // Use DOM to show game display and hide login displace
       const loginDisplay = document.getElementById('account');
       const gameDisplay = document.getElementById('game');
       loginDisplay.style.display = 'none';
       gameDisplay.style.display = 'block';
-      generateCardNameOnLogin(gameObj);
+      generateDiscardAndUserCards(gameObj);
+    });
+
+    socket.on('New login', (gameObj) => {
+      generateOpponentCardsAndName(gameObj);
     });
 
     // Inform user if username or password was incorrect

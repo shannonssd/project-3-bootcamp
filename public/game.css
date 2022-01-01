@@ -84,7 +84,9 @@ body {
   z-index: 0;
 }
 
-.opponent-container-name {
+.opponent-container-name1,
+.opponent-container-name2,
+.opponent-container-name3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,7 +94,9 @@ body {
   border-radius: 8%;
 }
 
-.opponent-name {
+.opponent-name1,
+.opponent-name2,
+.opponent-name3 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +106,9 @@ body {
   font-family: "Cabin", sans-serif;
 }
 
-.opponent-card-count {
+.opponent-card-count1,
+.opponent-card-count2,
+.opponent-card-count3 {
   display: flex;
   justify-content: center;
   align-items: center;
