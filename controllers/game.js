@@ -262,7 +262,6 @@ const initGameController = (db) => {
 
       // Create new object so that data can be hidden without affecting data in server
       let hiddenGameObj =  JSON.parse(JSON.stringify(gameObj));
-      console.log(hiddenGameObj);
       // Check for array index matching user socket id and 'hide' cards if it does not match
       for (let j = 0; j < hiddenGameObj.playersLoggedIn; j += 1) {
         if (!(hiddenGameObj.playersData[j].socketId === socket.id)) {

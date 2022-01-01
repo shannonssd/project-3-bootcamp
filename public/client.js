@@ -360,7 +360,39 @@ const generateOpponentCardsAndName = (gameObj) => {
 
   const opponentName3 = document.querySelector('.opponent-name3');
   const opponentCardCount3 = document.querySelector('.opponent-card-count3');
-
+  // if (gameObj.playersLoggedIn === 2) {
+    //   // Generate opponents cards- Next player:
+    //   for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+    //     opponentContainerCard1.appendChild(createOpponentCard());
+    //     // Only display max of 7 cards
+    //     if (i > 6) {
+    //       break;
+    //     }
+    //   }
+    //   opponentName1.innerText = `${opponentNamesInOrder[1]}`
+    //   opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+    // } else if (gameObj.playersLoggedIn === 3) {
+    //   // Generate opponents cards- Next player:
+    //   for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+    //     opponentContainerCard1.appendChild(createOpponentCard());
+    //     // Only display max of 7 cards
+    //     if (i > 6) {
+    //       break;
+    //     }
+    //   }
+    //   // Generate opponents cards- 3rd player:
+    //   for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
+    //     opponentContainerCard2.appendChild(createOpponentCard());
+    //     // Only display max of 7 cards
+    //     if (i > 6) {
+    //       break;
+    //     }
+    //   } 
+    //   opponentName1.innerText = `${opponentNamesInOrder[1]}`
+    //   opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+    //   opponentName2.innerText = `${opponentNamesInOrder[2]}`
+    //   opponentCardCount2.innerText = `Cards: ${opponentHandsInOrder[2]}`;
+    // } 
   // Once 4 players have joined, show opponent names and no of cards to everyone
   if (gameObj.playersLoggedIn === 4) {
     // Remove waiting message when 4th player logs in

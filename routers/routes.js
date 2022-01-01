@@ -29,6 +29,7 @@ module.exports = (io, app) => {
 
   // 'Routes' for every new user connection
   io.on('connection', (socket) => {
+    console.log(socket.id);
     // Add users socket id to an array
     gameController.addUsersSocketId(socket);
    
