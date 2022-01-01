@@ -29,7 +29,6 @@ module.exports = (io, app) => {
 
   // 'Routes' for every new user connection
   io.on('connection', (socket) => {
-    console.log(socket.id);
     // Add users socket id to an array
     gameController.addUsersSocketId(socket);
    
@@ -43,12 +42,13 @@ module.exports = (io, app) => {
       gameController.loginAttemptDb(socket, data);
     });
 
+    // When user tries to play a hand, evaluate attempt 
+    socket.on('Play hand', (gameData) => {
+      gameController.evaluateChoice(socket, gameData);
+    });
+
     // socket.on('Skip', () => {
     //   skipTurn(socket);
-    // });
-
-    // socket.on('Play hand', () => {
-    //   evaluateChoice(socket);
     // });
 
   });

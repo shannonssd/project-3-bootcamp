@@ -179,7 +179,8 @@ body {
   justify-content: space-around;
 }
 
-.user-play {
+.user-play,
+.user-play-master {
   color: white;
   font-size: 18px;
   text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;

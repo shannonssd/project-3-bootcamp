@@ -282,10 +282,15 @@ const initGameController = (db) => {
       socket.emit('New login', hiddenGameObjAll);
     }
   };
+
+  // When user tries to play a hand, evaluate attempt 
+  const evaluateChoice = (socket, gameData) => {};
+
   return {
     addUsersSocketId,
     signUpAttemptDb,
     loginAttemptDb,
+    evaluateChoice,
   };
 };
 
