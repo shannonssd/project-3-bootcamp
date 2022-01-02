@@ -69,6 +69,7 @@ const pressPlayBtn = () => {
   socket.emit('Play hand', gameData);
   
   socket.on('Invalid play', () => {
+    console.log('invalid play socket');
     // Inform player of invalid play
     const userMessage = document.getElementById('user-message');
     userMessage.innerText = "Invalid play! Please choose another card or skip your turn!";
@@ -90,6 +91,69 @@ const pressPlayBtn = () => {
   playButton.addEventListener('click', pressPlayBtn);
 
   // skipButton.addEventListener('click', pressSkipBtn);
+
+  /*
+  * ========================================================
+  * ========================================================
+  *
+  *       Show new cards if player is forced to draw 2
+  *
+  * ========================================================
+  * ========================================================
+  */
+  socket.on('Draw 2', (hiddenInfoGameObj) => {
+        console.log('draw socket');
+
+    // Find users cards in object
+    let playerHand = [];
+    for (let i = 0; i < hiddenInfoGameObj.playersData.length; i += 1) {
+      if (hiddenInfoGameObj.playersData[i].socketId === socket.id) {
+        playerHand = hiddenInfoGameObj.playersData[i].playerHand;
+      }
+    }
+    // Generate display with new cards
+    createUserCard(playerHand);
+  });
+
+ /*
+  * ========================================================
+  * ========================================================
+  *
+  *      Show new cards if players play was succesful
+  *
+  * ========================================================
+  * ========================================================
+  */
+socket.on('Valid play', (hiddenGameObj) => {
+      console.log('valid play socket');
+
+  // Find users cards in object
+    let playerHand = [];
+    for (let i = 0; i < hiddenGameObj.playersData.length; i += 1) {
+      if (hiddenGameObj.playersData[i].socketId === socket.id) {
+        playerHand = hiddenGameObj.playersData[i].playerHand;
+      }
+    }
+    // Generate display with new cards
+    createUserCard(playerHand);
+  });
+
+  /*
+  * ========================================================
+  * ========================================================
+  *
+  * Refresh all opponents cards if players play was succesful
+  *
+  * ========================================================
+  * ========================================================
+  */
+  socket.on('Round completed', (hiddenGameObjAll) => {
+        console.log('round complete socket');
+
+    generateOpponentCardsAndName(hiddenGameObjAll);
+    // Allow next player to see btn and make a play
+    alterBtnVisibility(hiddenGameObjAll);
+  });
 
 /*
  * ========================================================
@@ -115,8 +179,10 @@ const createOpponentCard = () => {
 };
 
 // Genereate discard pile card using DOM
-const createDiscardCard = (card) => {
+const createDiscardCard = (discardCardPile) => {
+  const card = discardCardPile[discardCardPile.length - 1];
   const discardContainer = document.getElementById('discard-container');
+  discardContainer.innerText = '';
   if (card.rank <= 9) {
     const outerCard = document.createElement('div');
     outerCard.classList.add('card'); 
@@ -211,8 +277,11 @@ let playMessageCount = 0;
 
 // Genereate user cards using DOM
 const createUserCard = (playerHand) => {
+  console.log('im being user');
+  const allCardContainer = document.getElementById('user-container-all-cards');
+  allCardContainer.innerText = '';
   for (let i = 0; i < playerHand.length; i += 1) {
-      const allCardContainer = document.getElementById('user-container-all-cards');
+    // const allCardContainer = document.getElementById('user-container-all-cards');
     if (playerHand[i].rank <= 9) {
       // Card + play message container 
       const cardContainer = document.createElement('div');
@@ -373,7 +442,7 @@ const createUserCard = (playerHand) => {
 
 const generateDiscardAndUserCards = (gameObj) => {
   // Generate and append discard pile card
-  createDiscardCard(gameObj.discardCard);
+  createDiscardCard(gameObj.discardCardPile);
   let playerHand = [];
   // Find users cards in object
   for (let i = 0; i < gameObj.playersData.length; i += 1) {
@@ -543,6 +612,8 @@ const signUpAttempt = () => {
 
     // Inform user if sign up successful
     socket.on('Sign up success', () => {
+          console.log('sign up succes socket');
+
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
@@ -551,6 +622,8 @@ const signUpAttempt = () => {
 
     // Inform user if username already exists
     socket.on('User exists', () => {
+          console.log('user ecists socket');
+
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
@@ -586,6 +659,8 @@ const loginAttempt = () => {
 
     // If login successful, show game display
     socket.on('Login successful', (gameObj) => {
+          console.log('login successful socket');
+
       username.value = '';
       password.value = '';
       
@@ -604,11 +679,15 @@ const loginAttempt = () => {
     });
 
     socket.on('New login', (gameObj) => {
+          console.log('new login socket');
+
       generateOpponentCardsAndName(gameObj);
     });
 
     // Inform user if username or password was incorrect
     socket.on('Invalid login', () => {
+          console.log('invalid login socket');
+
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
