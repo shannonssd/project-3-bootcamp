@@ -6,7 +6,8 @@
  *
  * ========================================================
  * ========================================================
- */  const getHash = require('../hashing.js');
+ */
+const getHash = require('../hashing.js');
 
 /*
  * ========================================================
@@ -20,7 +21,7 @@
 // Store all connected players in array
 let playersData = [];
 // Store all discard pile cards in array
-let discardCard = [];
+const discardCardPile = [];
 // Global variable to hide / show buttons to users
 let gameObj = {
   playerTurn: 0,
@@ -150,7 +151,11 @@ const initGameController = (db) => {
       var cardDeck = shuffleCards(newDeck);
 
       // Draw card for discard pile
-      discardCard = cardDeck.pop();
+      let discardCard = cardDeck.pop();
+
+      // Store all used cards in a pile
+      discardCardPile.push(discardCard);
+
       // Place discard pile card into object
       gameObj.discardCard = discardCard; 
 
@@ -282,9 +287,50 @@ const initGameController = (db) => {
       socket.emit('New login', hiddenGameObjAll);
     }
   };
+  // Check for valid number card
+  const checkIfPlayIsValid = (cardArr) => {
+    const card = cardArr[0];
+    let isTurnValid = false;
+    // Retrieve latest card on discard pile
+    const discardedCard = discardCardPile[discardCardPile.length - 1];
+    // Check conditions for number cards
+    if (card.category === 'number') {
+      // Check for same colour
+      if (discardedCard.colour === card.colour) {
+        isTurnValid = true;
+        // Check for same number regardless of colour
+      } else if (discardedCard.rank <= 9 && card.rank === discardedCard.rank) {
+        isTurnValid = true;
+      }  
+      return isTurnValid;
+    }
+
+    // Check conditions for action cards
+    if (card.rank === 10) {
+      // Check for same colour
+      if (discardedCard.colour === card.colour) {
+        isTurnValid = true;
+        // Check for same action card
+      } else if (card.category === discardedCard.category) {
+        isTurnValid = true;
+      }
+      return isTurnValid;
+    }
+  }; 
 
   // When user tries to play a hand, evaluate attempt 
-  const evaluateChoice = (socket, gameData) => {};
+  const evaluateChoice = (socket, gameData) => {
+    // Functions to check for various valid card plays
+    // const isActionCardValid = checkForActionCard(gameData.userCardToPlay);
+    const isCardValid = checkIfPlayIsValid(gameData.userCardToPlay);
+    // If card played is invalid, inform player
+    if (isCardValid === false) {
+      socket.emit('Invalid play');
+      // If card played is valid, inform ALL players + change turn + alter DB 
+    } else {
+
+    }
+  };
 
   return {
     addUsersSocketId,

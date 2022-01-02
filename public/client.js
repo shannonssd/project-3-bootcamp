@@ -44,12 +44,10 @@ const showBtn = () => {
 const alterBtnVisibility = (gameObj) => {
   // If not players turn, hide gameplay buttons
   if(!(socket.id === gameObj.playersData[gameObj.playerTurn].socketId)) {
-    console.log('hide')
     hideBtn();
   }
   // If players turn, show gameplay buttons
   if(socket.id === gameObj.playersData[gameObj.playerTurn].socketId) {
-    console.log('show');
     showBtn();
   }
 };
@@ -69,6 +67,15 @@ const pressPlayBtn = () => {
     currentGameId,
   }  
   socket.emit('Play hand', gameData);
+  
+  socket.on('Invalid play', () => {
+    // Inform player of invalid play
+    const userMessage = document.getElementById('user-message');
+    userMessage.innerText = "Invalid play! Please choose another card or skip your turn!";
+    // Show that card entry has been unselected
+    const previousPlayMessage = document.querySelector(`.user-play${previousSelectedCardIndex}`);
+    previousPlayMessage.style.display = 'none';
+  });
 };
 
 /*
@@ -173,7 +180,6 @@ const createDiscardCard = (card) => {
 // When user clicks a card, store / remove card from global array + show/ hide 'play!' message under card
 const cardClick = (index, playerHand) => {
   const playMessageDisplay = document.querySelector(`.user-play${index}`);
-  console.log(`.user-play${index}`);
   // First time the user clicks a card, do the following:
   if(userCardToPlay.length === 0) {
     // 1. Show the 'play!' message under card
