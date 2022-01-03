@@ -299,9 +299,6 @@ const initGameController = (db) => {
     const discardCardPileDB  = game.gameState.gameObj.discardCardPile;
     // Retrieve latest card on discard pile
     const discardedCard = discardCardPileDB[discardCardPileDB.length - 1];
-    console.log('discard card:', discardedCard);
-    console.log('discard card pile:', discardCardPileDB);
-    console.log('player card:', card);
 
     // Check conditions for number cards
     if (card.category === 'number') {
@@ -311,10 +308,8 @@ const initGameController = (db) => {
       }  
       // Check for same number regardless of colour
       if ((discardedCard.colour !== card.colour) && (card.rank === discardedCard.rank)) {
-        console.log('diff color working!!!!');
         isTurnValid = true;
       }  
-      console.log(isTurnValid);
       return isTurnValid;
     }
 
@@ -326,25 +321,11 @@ const initGameController = (db) => {
         // Check for same action card
       }  
       if ((discardedCard.colour !== card.colour) && (card.category === discardedCard.category)) {
-        console.log('diff color working!!!!');
         isTurnValid = true;
       }
-      console.log(isTurnValid);
       return isTurnValid;
     }
   }; 
-  // const checkForValidPlayerTurnIndex = (playerTurn) => {
-  //   if (playerTurn < 0) {
-  //     console.log('playerTurn changer working!');
-  //     playerTurn = 4 + playerTurn;
-  //   } 
-  //   if (playerTurn > 3) {
-  //       console.log('playerTurn changer working!');
-
-  //     playerTurn = playerTurn - 4;
-  //   }
-  //   return playerTurn;
-  // };
 
   const ifPlayValid = async (socket, gameData) => {
     // 1. Access game data in DB based on game id
@@ -430,7 +411,6 @@ const initGameController = (db) => {
       // 5.2 Send to player who had to draw 2 all his cards
       socket.broadcast.to(socketIdOfDraw2Player).emit('Draw 2', hiddenInfoGameObj);
     }
-    console.log('Discard Pile', latestGameObj.discardCardPile);
     // 6. Update DB
     try {
       await db.Game.update({
@@ -522,7 +502,6 @@ const initGameController = (db) => {
       latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
     }
     
-    console.log('Discard Pile', latestGameObj.discardCardPile);
     // 4. Update DB
     try {
       await db.Game.update({

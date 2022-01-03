@@ -21,13 +21,7 @@ body {
   border-radius: 48px;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-}
-
-#login-container-title {
-  /* display: flex;
-  justify-content: center; */
 }
 
 #login-title {
@@ -103,7 +97,6 @@ body {
   color: white;
   border-radius: 5%;
   text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
-  /* padding: 5px 5px; */
   text-align: center;
   font-size: 25px;
   margin-bottom: 28px;
@@ -120,7 +113,6 @@ body {
   color: white;
   border-radius: 5%;
   text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
-  /* padding: 5px 5px; */
   text-align: center;
   font-size: 25px;
   margin-bottom: 8px;

@@ -91,7 +91,6 @@ const pressPlayBtn = () => {
   socket.emit('Play hand', gameData);
   
   socket.on('Invalid play', () => {
-    console.log('invalid play socket');
     // Inform player of invalid play
     const userMessage = document.getElementById('user-message');
     userMessage.innerText = "Invalid play! Please choose another card or skip your turn!";
@@ -131,8 +130,6 @@ const pressSkipBtn = () => {
   * ========================================================
   */
   socket.on('Draw 2', (hiddenInfoGameObj) => {
-        console.log('draw socket');
-
     // Find users cards in object
     let playerHand = [];
     for (let i = 0; i < hiddenInfoGameObj.playersData.length; i += 1) {
@@ -163,9 +160,6 @@ socket.on('Valid play', (hiddenGameObj) => {
   alteredPlayerHand = [];
   previousSelectedCardIndex = '';
 
-  console.log('valid play socket');
-  console.log(hiddenGameObj);
-
   // Find users cards in object
     let playerHand = [];
     for (let i = 0; i < hiddenGameObj.playersData.length; i += 1) {
@@ -187,8 +181,6 @@ socket.on('Valid play', (hiddenGameObj) => {
   * ========================================================
   */
   socket.on('Round completed', (hiddenGameObjAll) => {
-    console.log('round complete socket');
-    console.log(hiddenGameObjAll);
     generateOpponentCardsAndName(hiddenGameObjAll);
     // Allow next player to see btn and make a play
     alterBtnVisibility(hiddenGameObjAll);
@@ -225,7 +217,6 @@ const createOpponentCard = () => {
 // Genereate discard pile card using DOM
 const createDiscardCard = (discardCardPile) => {
   const card = discardCardPile[discardCardPile.length - 1];
-  console.log(card);
   const discardContainer = document.getElementById('discard-container');
   discardContainer.innerText = '';
   if (card.rank <= 9) {
@@ -285,7 +276,6 @@ const createDiscardCard = (discardCardPile) => {
     outerCard.appendChild(inner);
     discardContainer.appendChild(outerCard);
   }
-  console.log(discardContainer);
 };
 
 
@@ -323,11 +313,9 @@ let playMessageCount = 0;
 
 // Genereate user cards using DOM
 const createUserCard = (playerHand) => {
-  console.log('im being user');
   const allCardContainer = document.getElementById('user-container-all-cards');
   allCardContainer.innerText = '';
   for (let i = 0; i < playerHand.length; i += 1) {
-    // const allCardContainer = document.getElementById('user-container-all-cards');
     if (playerHand[i].rank <= 9) {
       // Card + play message container 
       const cardContainer = document.createElement('div');
@@ -363,7 +351,6 @@ const createUserCard = (playerHand) => {
       userCard.addEventListener('click', () => { 
         cardClick(i, playerHand); 
       });
-      // playMessageCount += 1;
       allCardContainer.appendChild(cardContainer);
     } else if (playerHand[i].rank === 10 && playerHand[i].category === 'reverse') {
       // Card + play message container 
@@ -400,7 +387,6 @@ const createUserCard = (playerHand) => {
       userCard.addEventListener('click', () => { 
         cardClick(i, playerHand); 
       });
-      // playMessageCount += 1;
       allCardContainer.appendChild(cardContainer);
     } else if (playerHand[i].rank === 10 && playerHand[i].category === 'skip') {
       // Card + play message container 
@@ -439,7 +425,6 @@ const createUserCard = (playerHand) => {
       userCard.addEventListener('click', () => { 
         cardClick(i, playerHand); 
       });
-      // playMessageCount += 1;
       allCardContainer.appendChild(cardContainer);
 
     } else if (playerHand[i].rank === 10 && playerHand[i].category === 'draw') {
@@ -479,7 +464,6 @@ const createUserCard = (playerHand) => {
       userCard.addEventListener('click', () => { 
         cardClick(i, playerHand); 
       });
-      // playMessageCount += 1;
       allCardContainer.appendChild(cardContainer);
     }
   }
@@ -659,8 +643,6 @@ const signUpAttempt = () => {
 
     // Inform user if sign up successful
     socket.on('Sign up success', () => {
-          console.log('sign up succes socket');
-
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
@@ -669,8 +651,6 @@ const signUpAttempt = () => {
 
     // Inform user if username already exists
     socket.on('User exists', () => {
-          console.log('user ecists socket');
-
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
@@ -706,8 +686,6 @@ const loginAttempt = () => {
 
     // If login successful, show game display
     socket.on('Login successful', (gameObj) => {
-          console.log('login successful socket');
-
       username.value = '';
       password.value = '';
       
@@ -722,30 +700,25 @@ const loginAttempt = () => {
       // On response from server - Alter button visibility based on socket id
       alterBtnVisibility(gameObj)
       generateDiscardAndUserCards(gameObj);
-      // generateOpponentCardsAndName(gameObj);
       
-      // let usernameDisplay = ''; 
-      // // Find username
-      // for (let j = 0; j < gameObj.playersData.length; j += 1) {
-      //   if (gameObj.playersData[j].socketId === socket.id) {
-      //     usernameDisplay = gameObj.playersData[j].username;
-      //   }
-      // }
-      // // Display username to player
-      // const userName = document.getElementById('user-name');
-      // userName.innerText = `Player: ${usernameDisplay}`;
+      let usernameDisplay = ''; 
+      // Find username
+      for (let j = 0; j < gameObj.playersData.length; j += 1) {
+        if (gameObj.playersData[j].socketId === socket.id) {
+          usernameDisplay = gameObj.playersData[j].username;
+        }
+      }
+      // Display username to player
+      const userName = document.getElementById('user-name');
+      userName.innerText = `Player: ${usernameDisplay}`;
     });
 
     socket.on('New login', (gameObj) => {
-          console.log('new login socket');
-
       generateOpponentCardsAndName(gameObj);
     });
 
     // Inform user if username or password was incorrect
     socket.on('Invalid login', () => {
-          console.log('invalid login socket');
-
       username.value = '';
       password.value = '';
       const loginMessage = document.getElementById('login-message');
