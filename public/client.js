@@ -111,6 +111,10 @@ const pressPlayBtn = () => {
         playerHand = hiddenInfoGameObj.playersData[i].playerHand;
       }
     }
+    // Reset global variables
+    userCardToPlay = [];
+    alteredPlayerHand = [];
+    previousSelectedCardIndex = '';
     // Generate display with new cards
     createUserCard(playerHand);
   });
@@ -125,6 +129,11 @@ const pressPlayBtn = () => {
   * ========================================================
   */
 socket.on('Valid play', (hiddenGameObj) => {
+  // Reset global variables
+  userCardToPlay = [];
+  alteredPlayerHand = [];
+  previousSelectedCardIndex = '';
+
   console.log('valid play socket');
   console.log(hiddenGameObj);
 

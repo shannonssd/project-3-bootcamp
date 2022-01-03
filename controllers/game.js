@@ -413,7 +413,7 @@ const initGameController = (db) => {
       // Send to player who had to draw 2 all his cards
       socket.broadcast.to(socketIdOfDraw2Player).emit('Draw 2', hiddenInfoGameObj);
     }
-    console.log('latestGameObj', latestGameObj);
+    console.log('Discard Pile', latestGameObj.discardCardPile);
     // 5. Update DB
     try {
       await db.Game.update({
