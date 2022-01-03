@@ -589,4 +589,3 @@ const initGameController = (db) => {
 
 exports.initGameController = initGameController;
 
-

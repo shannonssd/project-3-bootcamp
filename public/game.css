@@ -44,7 +44,6 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* max-width: 365px; */
 }
 
 .opponent-card-outer {
