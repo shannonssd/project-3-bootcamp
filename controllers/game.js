@@ -91,7 +91,7 @@ var makeDeck = () => {
       if(rankCounter <= 9) {
         cardCategory = 'number';
       } else if (rankCounter === 10) {
-        cardCategory = 'skip';
+        cardCategory = 'Skip';
       } else if (rankCounter === 11) {
         cardCategory = 'reverse';
       } else if (rankCounter === 12) {
@@ -389,7 +389,7 @@ const initGameController = (db) => {
       if (latestGameObj.playerTurn > 3) {
         latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
       }
-    } else if (gameData.userCardToPlay.category === 'skip'){
+    } else if (gameData.userCardToPlay.category === 'Skip'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       if (latestGameObj.playerTurn < 0) {
@@ -460,13 +460,33 @@ const initGameController = (db) => {
     // 7. Inform player that his play was valid + update his cards display
     socket.emit('Valid play', hiddenGameObj);
 
+    // 8. Generate info of card played to send to all players
+    let messageToAllPlayers = '';
+    let playerName = '';
+    for (let j = 0; j < latestGameObj.playersData.length; j += 1) {
+      if (latestGameObj.playersData[j].socketId === socket.id) {
+        playerName = latestGameObj.playersData[j].username;
+      }
+    }
+    let cardDetails = '';
+    if (gameData.userCardToPlay.rank === 10) {
+      cardDetails = ` played a ${gameData.userCardToPlay.colour} ${gameData.userCardToPlay.category} `
+    } else if (gameData.userCardToPlay.category === 'number') {
+      cardDetails = ` played a ${gameData.userCardToPlay.colour} ${gameData.userCardToPlay.rank}.`
+    }
+    messageToAllPlayers = playerName + cardDetails;
+
     // Create new object so that data can be hidden without affecting data in server
     let hiddenGameObjAll =  JSON.parse(JSON.stringify(latestGameObj));
     // Modify object to reflect number of each players cards
     for (let k = 0; k < hiddenGameObjAll.playersLoggedIn; k += 1) {
       hiddenGameObjAll.playersData[k].playerHand = hiddenGameObjAll.playersData[k].playerHand.length;
     }
-    // 8. Inform ALL player if round is complete & update opponents cards
+
+    // 9. Add player message to object
+    hiddenGameObjAll.message = messageToAllPlayers;
+    
+    // 10. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
   };
@@ -532,13 +552,28 @@ const initGameController = (db) => {
     // 5. Inform player that his play was valid + update his cards display
     socket.emit('Valid play', hiddenGameObj);
 
+    // 6. Generate info of card played to send to all players
+    let messageToAllPlayers = '';
+    let playerName = '';
+    for (let j = 0; j < latestGameObj.playersData.length; j += 1) {
+      if (latestGameObj.playersData[j].socketId === socket.id) {
+        playerName = latestGameObj.playersData[j].username;
+      }
+    }
+    messageToAllPlayers = `${playerName} skipped their turn.`;
+
     // Create new object so that data can be hidden without affecting data in server
     let hiddenGameObjAll =  JSON.parse(JSON.stringify(latestGameObj));
     // Modify object to reflect number of each players cards
     for (let k = 0; k < hiddenGameObjAll.playersLoggedIn; k += 1) {
       hiddenGameObjAll.playersData[k].playerHand = hiddenGameObjAll.playersData[k].playerHand.length;
     }
-    // 6. Inform ALL player if round is complete & update opponents cards
+
+    // 7. Add player message to object
+    hiddenGameObjAll.message = messageToAllPlayers;
+    
+
+    // 8. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
   }

@@ -194,6 +194,9 @@ socket.on('Valid play', (hiddenGameObj) => {
     alterBtnVisibility(hiddenGameObjAll);
     // Update discard pile card
     createDiscardCard(hiddenGameObjAll.discardCardPile);
+    // Update game message to players
+    const userMessageToPlayers = document.getElementById('user-message');
+    userMessageToPlayers.innerText = `${hiddenGameObjAll.message}`;
   });
 
 /*
