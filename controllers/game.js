@@ -302,17 +302,19 @@ const initGameController = (db) => {
     console.log('discard card:', discardedCard);
     console.log('discard card pile:', discardCardPileDB);
     console.log('player card:', card);
+
     // Check conditions for number cards
     if (card.category === 'number') {
       // Check for same colour
       if (discardedCard.colour === card.colour) {
         isTurnValid = true;
-        // Check for same number regardless of colour
       }  
-      if ( card.rank === discardedCard.rank) {
+      // Check for same number regardless of colour
+      if ((discardedCard.colour !== card.colour) && (card.rank === discardedCard.rank)) {
+        console.log('diff color working!!!!');
         isTurnValid = true;
       }  
-         console.log(isTurnValid);
+      console.log(isTurnValid);
       return isTurnValid;
     }
 
@@ -323,22 +325,26 @@ const initGameController = (db) => {
         isTurnValid = true;
         // Check for same action card
       }  
-      if (card.category === discardedCard.category) {
+      if ((discardedCard.colour !== card.colour) && (card.category === discardedCard.category)) {
+        console.log('diff color working!!!!');
         isTurnValid = true;
       }
       console.log(isTurnValid);
       return isTurnValid;
     }
   }; 
-  const checkForValidPlayerTurnIndex = (playerTurn) => {
-    if (playerTurn < 0) {
-      playerTurn = 4 + playerTurn;
-    } 
-    if (playerTurn > 3) {
-      playerTurn = playerTurn - 4;
-    }
-    return playerTurn;
-  };
+  // const checkForValidPlayerTurnIndex = (playerTurn) => {
+  //   if (playerTurn < 0) {
+  //     console.log('playerTurn changer working!');
+  //     playerTurn = 4 + playerTurn;
+  //   } 
+  //   if (playerTurn > 3) {
+  //       console.log('playerTurn changer working!');
+
+  //     playerTurn = playerTurn - 4;
+  //   }
+  //   return playerTurn;
+  // };
 
   const ifPlayValid = async (socket, gameData) => {
     // Access game data in DB based on game id
@@ -359,17 +365,38 @@ const initGameController = (db) => {
     // 4. Update index to reflect next players turn
     if (gameData.userCardToPlay.category === 'number' || gameData.userCardToPlay.category === 'reverse'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
-      checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+      // checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+      if (latestGameObj.playerTurn < 0) {
+      latestGameObj.playerTurn = 4 + latestGameObj.playerTurn;
+      } 
+      if (latestGameObj.playerTurn > 3) {
+        latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
+      }
     } else if (gameData.userCardToPlay.category === 'skip'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       latestGameObj.playerTurn += latestGameObj.playerDirection;
-      checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+      if (latestGameObj.playerTurn < 0) {
+        latestGameObj.playerTurn = 4 + latestGameObj.playerTurn;
+      } 
+      if (latestGameObj.playerTurn > 3) {
+        latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
+      }    
     } else if (gameData.userCardToPlay.category === 'draw'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
-      checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+      if (latestGameObj.playerTurn < 0) {
+      latestGameObj.playerTurn = 4 + latestGameObj.playerTurn;
+      } 
+      if (latestGameObj.playerTurn > 3) {
+        latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
+      }      
       const indexOfPlayerToDraw2 = latestGameObj.playerTurn; 
       latestGameObj.playerTurn += latestGameObj.playerDirection;
-      checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+      if (latestGameObj.playerTurn < 0) {
+        latestGameObj.playerTurn = 4 + latestGameObj.playerTurn;
+      } 
+      if (latestGameObj.playerTurn > 3) {
+        latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
+      }      
       // Draw two cards for subsequent player
       latestGameObj.playersData[indexOfPlayerToDraw2].playerHand.push(game.gameState.cardDeck.pop());
       latestGameObj.playersData[indexOfPlayerToDraw2].playerHand.push(game.gameState.cardDeck.pop());
@@ -388,13 +415,22 @@ const initGameController = (db) => {
     }
     console.log('latestGameObj', latestGameObj);
     // 5. Update DB
-    await game.update({
-      gameState: {
-        cardDeck: game.gameState.cardDeck,
-        gameObj: latestGameObj,
-      }, 
-      returning: true,
-    });
+    try {
+      await db.Game.update({
+        gameState: {
+          cardDeck: game.gameState.cardDeck,
+          gameObj: latestGameObj,
+        }}, 
+       { 
+         where: {
+          id: gameData.currentGameId,
+          }
+        },
+      );
+    } catch (error) {
+      console.log('error:', error)
+    }
+    
 
     // Create new object so that data can be hidden without affecting data in server
     let hiddenGameObj =  JSON.parse(JSON.stringify(latestGameObj));

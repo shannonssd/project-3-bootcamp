@@ -125,7 +125,8 @@ const pressPlayBtn = () => {
   * ========================================================
   */
 socket.on('Valid play', (hiddenGameObj) => {
-      console.log('valid play socket');
+  console.log('valid play socket');
+  console.log(hiddenGameObj);
 
   // Find users cards in object
     let playerHand = [];
@@ -503,7 +504,7 @@ const generateOpponentCardsAndName = (gameObj) => {
       for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
         opponentContainerCard1.appendChild(createOpponentCard());
         // Only display max of 7 cards
-        if (i > 6) {
+        if (i >= 6) {
           break;
         }
       }
@@ -517,7 +518,7 @@ const generateOpponentCardsAndName = (gameObj) => {
       for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
         opponentContainerCard1.appendChild(createOpponentCard());
         // Only display max of 7 cards
-        if (i > 6) {
+        if (i >= 6) {
           break;
         }
       }
@@ -525,7 +526,7 @@ const generateOpponentCardsAndName = (gameObj) => {
       for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
         opponentContainerCard2.appendChild(createOpponentCard());
         // Only display max of 7 cards
-        if (i > 6) {
+        if (i >= 6) {
           break;
         }
       } 
@@ -546,7 +547,7 @@ const generateOpponentCardsAndName = (gameObj) => {
     for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
       opponentContainerCard1.appendChild(createOpponentCard());
       // Only display max of 7 cards
-      if (i > 6) {
+      if (i >= 6) {
         break;
       }
     }
@@ -554,7 +555,7 @@ const generateOpponentCardsAndName = (gameObj) => {
     for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
       opponentContainerCard2.appendChild(createOpponentCard());
       // Only display max of 7 cards
-      if (i > 6) {
+      if (i >= 6) {
         break;
       }
     } 
@@ -562,7 +563,7 @@ const generateOpponentCardsAndName = (gameObj) => {
     for (let i = 0; i < opponentHandsInOrder[3]; i += 1){
       opponentContainerCard3.appendChild(createOpponentCard());
       // Only display max of 7 cards
-      if (i > 6) {
+      if (i >= 6) {
         break;
       }
     } 
