@@ -149,9 +149,18 @@ body {
 
 #user-container-message {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin: 4px 0px 4px 0px;
 }
+
+#user-name {
+  color: rgb(0, 0, 0);
+  font-size: 26px;
+  text-shadow: 2px 1px white, 0 1px white, 1px 0 white, 0 -1px white;
+  font-family: "Cabin", sans-serif;
+}
+
 #user-message {
   color: white;
   font-size: 26px;

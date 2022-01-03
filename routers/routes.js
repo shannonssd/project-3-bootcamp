@@ -47,9 +47,8 @@ module.exports = (io, app) => {
       gameController.evaluateChoice(socket, gameData);
     });
 
-    // socket.on('Skip', () => {
-    //   skipTurn(socket);
-    // });
-
+    socket.on('Skip turn', (gameData) => {
+      gameController.skipTurn(socket, gameData);
+    });
   });
 };

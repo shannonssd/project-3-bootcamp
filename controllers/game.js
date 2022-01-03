@@ -347,14 +347,31 @@ const initGameController = (db) => {
   // };
 
   const ifPlayValid = async (socket, gameData) => {
-    // Access game data in DB based on game id
+    // 1. Access game data in DB based on game id
     const game = await db.Game.findByPk(gameData.currentGameId);
     let latestGameObj = game.gameState.gameObj;
-    // 1. Update discard pile
+
+    let winnerName = '';
+    // 1.5. Check and see if the player has won!
+    if (gameData.alteredPlayerHand.length === 0) {
+      // Find winner's name 
+      for (let j = 0; j < latestGameObj.playersData.length; j += 1) {
+        if (latestGameObj.playersData[j].socketId === socket.id) {
+          winnerName = latestGameObj.playersData[j].username;
+        }
+      }
+      const data = {
+        winner: `${winnerName} has won the game!`
+      }
+      socket.broadcast.emit('Game over', data);
+      return socket.emit('Game over', data);
+    }
+   
+    // 2. Update discard pile
     latestGameObj.discardCardPile.push(gameData.userCardToPlay);
-    // 2. Update players cards
+    // 3. Update players cards
     latestGameObj.playersData[latestGameObj.playerTurn].playerHand = gameData.alteredPlayerHand;
-    // 3. Determine player direction based on reverse card played
+    // 4. Determine player direction based on reverse card played
     if (gameData.userCardToPlay.category === 'reverse') {
       if (latestGameObj.playerDirection === 1) {
         latestGameObj.playerDirection = -1;
@@ -362,7 +379,7 @@ const initGameController = (db) => {
         latestGameObj.playerDirection = 1;
       }
     }
-    // 4. Update index to reflect next players turn
+    // 5. Update index to reflect next players turn
     if (gameData.userCardToPlay.category === 'number' || gameData.userCardToPlay.category === 'reverse'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       // checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
@@ -397,7 +414,7 @@ const initGameController = (db) => {
       if (latestGameObj.playerTurn > 3) {
         latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
       }      
-      // Draw two cards for subsequent player
+      // 5.1 Draw two cards for subsequent player
       latestGameObj.playersData[indexOfPlayerToDraw2].playerHand.push(game.gameState.cardDeck.pop());
       latestGameObj.playersData[indexOfPlayerToDraw2].playerHand.push(game.gameState.cardDeck.pop());
       const socketIdOfDraw2Player = latestGameObj.playersData[indexOfPlayerToDraw2].socketId;
@@ -410,11 +427,11 @@ const initGameController = (db) => {
           hiddenInfoGameObj.playersData[j].playerHand = hiddenInfoGameObj.playersData[j].playerHand.length;
         }
       }
-      // Send to player who had to draw 2 all his cards
+      // 5.2 Send to player who had to draw 2 all his cards
       socket.broadcast.to(socketIdOfDraw2Player).emit('Draw 2', hiddenInfoGameObj);
     }
     console.log('Discard Pile', latestGameObj.discardCardPile);
-    // 5. Update DB
+    // 6. Update DB
     try {
       await db.Game.update({
         gameState: {
@@ -440,7 +457,7 @@ const initGameController = (db) => {
         hiddenGameObj.playersData[j].playerHand = hiddenGameObj.playersData[j].playerHand.length;
       }
     }
-    // 6. Inform player that his play was valid
+    // 7. Inform player that his play was valid + update his cards display
     socket.emit('Valid play', hiddenGameObj);
 
     // Create new object so that data can be hidden without affecting data in server
@@ -449,7 +466,7 @@ const initGameController = (db) => {
     for (let k = 0; k < hiddenGameObjAll.playersLoggedIn; k += 1) {
       hiddenGameObjAll.playersData[k].playerHand = hiddenGameObjAll.playersData[k].playerHand.length;
     }
-    // 7. Inform ALL player if there is a new login - to generate opponent card display
+    // 8. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
   };
@@ -467,12 +484,71 @@ const initGameController = (db) => {
       ifPlayValid(socket, gameData);
     }
   };
+  const skipTurn = async (socket, gameData) => {
+    // 1. Access game data in DB based on game id
+    const game = await db.Game.findByPk(gameData.currentGameId);
+    let latestGameObj = game.gameState.gameObj;
+  
+    // 2. Update player cards
+    latestGameObj.playersData[latestGameObj.playerTurn].playerHand.push(game.gameState.cardDeck.pop());
+   
+    // 3. Update index to reflect next players turn
+    latestGameObj.playerTurn += latestGameObj.playerDirection;
+    // checkForValidPlayerTurnIndex(latestGameObj.playerTurn);
+    if (latestGameObj.playerTurn < 0) {
+    latestGameObj.playerTurn = 4 + latestGameObj.playerTurn;
+    } 
+    if (latestGameObj.playerTurn > 3) {
+      latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
+    }
+    
+    console.log('Discard Pile', latestGameObj.discardCardPile);
+    // 4. Update DB
+    try {
+      await db.Game.update({
+        gameState: {
+          cardDeck: game.gameState.cardDeck,
+          gameObj: latestGameObj,
+        }}, 
+       { 
+         where: {
+          id: gameData.currentGameId,
+          }
+        },
+      );
+    } catch (error) {
+      console.log('error:', error)
+    }
+    
+
+    // Create new object so that data can be hidden without affecting data in server
+    let hiddenGameObj =  JSON.parse(JSON.stringify(latestGameObj));
+    // Check for array index matching user socket id and 'hide' cards if it does not match
+    for (let j = 0; j < hiddenGameObj.playersLoggedIn; j += 1) {
+      if (!(hiddenGameObj.playersData[j].socketId === socket.id)) {
+        hiddenGameObj.playersData[j].playerHand = hiddenGameObj.playersData[j].playerHand.length;
+      }
+    }
+    // 5. Inform player that his play was valid + update his cards display
+    socket.emit('Valid play', hiddenGameObj);
+
+    // Create new object so that data can be hidden without affecting data in server
+    let hiddenGameObjAll =  JSON.parse(JSON.stringify(latestGameObj));
+    // Modify object to reflect number of each players cards
+    for (let k = 0; k < hiddenGameObjAll.playersLoggedIn; k += 1) {
+      hiddenGameObjAll.playersData[k].playerHand = hiddenGameObjAll.playersData[k].playerHand.length;
+    }
+    // 6. Inform ALL player if round is complete & update opponents cards
+    socket.broadcast.emit('Round completed', hiddenGameObjAll);
+    socket.emit('Round completed', hiddenGameObjAll);
+  }
 
   return {
     addUsersSocketId,
     signUpAttemptDb,
     loginAttemptDb,
     evaluateChoice,
+    skipTurn,
   };
 };
 

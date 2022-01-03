@@ -51,6 +51,28 @@ const alterBtnVisibility = (gameObj) => {
     showBtn();
   }
 };
+
+/*
+ * ========================================================
+ * ========================================================
+ *
+ *       Logic if a player uses up cards and wins
+ *
+ * ========================================================
+ * ========================================================
+ */
+const gameOver = (data) => {
+  // Inform all players that someone won
+  const userMessage = document.getElementById('user-message');
+  userMessage.innerText = `${data.winner}`;
+  // Hide all buttons
+  hideBtn();
+}
+
+socket.on('Game over', (data) => {
+  gameOver(data);
+});
+
 /*
  * ========================================================
  * ========================================================
@@ -79,6 +101,13 @@ const pressPlayBtn = () => {
   });
 };
 
+const pressSkipBtn = () => {
+  const gameData = {
+    currentGameId,
+  }  
+  socket.emit('Skip turn', gameData);
+};
+
 /*
  * ========================================================
  * ========================================================
@@ -90,7 +119,7 @@ const pressPlayBtn = () => {
  */
   playButton.addEventListener('click', pressPlayBtn);
 
-  // skipButton.addEventListener('click', pressSkipBtn);
+  skipButton.addEventListener('click', pressSkipBtn);
 
   /*
   * ========================================================
@@ -691,6 +720,17 @@ const loginAttempt = () => {
       alterBtnVisibility(gameObj)
       generateDiscardAndUserCards(gameObj);
       // generateOpponentCardsAndName(gameObj);
+      
+      let usernameDisplay = ''; 
+      // Find username
+      for (let j = 0; j < gameObj.playersData.length; j += 1) {
+        if (gameObj.playersData[j].socketId === socket.id) {
+          usernameDisplay = gameObj.playersData[j].username;
+        }
+      }
+      // Display username to player
+      const userName = document.getElementById('user-name');
+      userName.innerText = `Player: ${usernameDisplay}`;
     });
 
     socket.on('New login', (gameObj) => {
