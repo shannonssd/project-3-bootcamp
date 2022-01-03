@@ -62,7 +62,7 @@ const alterBtnVisibility = (gameObj) => {
  */
 const pressPlayBtn = () => {
   const gameData = {
-    userCardToPlay,
+    userCardToPlay: userCardToPlay[userCardToPlay.length - 1],
     alteredPlayerHand,
     currentGameId,
   }  
@@ -148,11 +148,13 @@ socket.on('Valid play', (hiddenGameObj) => {
   * ========================================================
   */
   socket.on('Round completed', (hiddenGameObjAll) => {
-        console.log('round complete socket');
-
+    console.log('round complete socket');
+    console.log(hiddenGameObjAll);
     generateOpponentCardsAndName(hiddenGameObjAll);
     // Allow next player to see btn and make a play
     alterBtnVisibility(hiddenGameObjAll);
+    // Update discard pile card
+    createDiscardCard(hiddenGameObjAll.discardCardPile);
   });
 
 /*
@@ -181,6 +183,7 @@ const createOpponentCard = () => {
 // Genereate discard pile card using DOM
 const createDiscardCard = (discardCardPile) => {
   const card = discardCardPile[discardCardPile.length - 1];
+  console.log(card);
   const discardContainer = document.getElementById('discard-container');
   discardContainer.innerText = '';
   if (card.rank <= 9) {
@@ -240,6 +243,7 @@ const createDiscardCard = (discardCardPile) => {
     outerCard.appendChild(inner);
     discardContainer.appendChild(outerCard);
   }
+  console.log(discardContainer);
 };
 
 
@@ -534,6 +538,7 @@ const generateOpponentCardsAndName = (gameObj) => {
   if (gameObj.playersLoggedIn === 4) {
     opponentContainerCard1.innerText = '';
     opponentContainerCard2.innerText = '';
+    opponentContainerCard3.innerText = '';
 
     // Remove waiting message when 4th player logs in
     userMessage.innerText = '';
