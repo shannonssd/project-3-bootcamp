@@ -47,7 +47,7 @@ module.exports = (io, app) => {
       gameController.evaluateChoice(socket, gameData);
     });
 
-    // When user skips turn, add a card to their hand 
+    // When user skips turn, add a card to their hand
     socket.on('Skip turn', (gameData) => {
       gameController.skipTurn(socket, gameData);
     });

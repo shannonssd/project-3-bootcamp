@@ -91,7 +91,7 @@ var makeDeck = () => {
       if(rankCounter <= 9) {
         cardCategory = 'number';
       } else if (rankCounter === 10) {
-        cardCategory = 'Skip';
+        cardCategory = 'skip';
       } else if (rankCounter === 11) {
         cardCategory = 'reverse';
       } else if (rankCounter === 12) {
@@ -389,7 +389,7 @@ const initGameController = (db) => {
       if (latestGameObj.playerTurn > 3) {
         latestGameObj.playerTurn = latestGameObj.playerTurn - 4;
       }
-    } else if (gameData.userCardToPlay.category === 'Skip'){
+    } else if (gameData.userCardToPlay.category === 'skip'){
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       latestGameObj.playerTurn += latestGameObj.playerDirection;
       if (latestGameObj.playerTurn < 0) {
@@ -588,4 +588,5 @@ const initGameController = (db) => {
 };
 
 exports.initGameController = initGameController;
+
 

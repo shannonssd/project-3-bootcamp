@@ -724,16 +724,16 @@ const loginAttempt = () => {
       generateDiscardAndUserCards(gameObj);
       // generateOpponentCardsAndName(gameObj);
       
-      let usernameDisplay = ''; 
-      // Find username
-      for (let j = 0; j < gameObj.playersData.length; j += 1) {
-        if (gameObj.playersData[j].socketId === socket.id) {
-          usernameDisplay = gameObj.playersData[j].username;
-        }
-      }
-      // Display username to player
-      const userName = document.getElementById('user-name');
-      userName.innerText = `Player: ${usernameDisplay}`;
+      // let usernameDisplay = ''; 
+      // // Find username
+      // for (let j = 0; j < gameObj.playersData.length; j += 1) {
+      //   if (gameObj.playersData[j].socketId === socket.id) {
+      //     usernameDisplay = gameObj.playersData[j].username;
+      //   }
+      // }
+      // // Display username to player
+      // const userName = document.getElementById('user-name');
+      // userName.innerText = `Player: ${usernameDisplay}`;
     });
 
     socket.on('New login', (gameObj) => {

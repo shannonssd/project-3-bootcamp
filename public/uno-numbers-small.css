@@ -146,6 +146,8 @@
   display: block;
   content: "";
   position: relative;
+  /* top: -25px; */
+  /* left: 5px; */
   width: 80%;
   border: 1px solid #000000;
   height: 2px;
