@@ -452,7 +452,7 @@ const initGameController = (db) => {
     if (gameData.userCardToPlay.rank === 10) {
       cardDetails = ` played a ${gameData.userCardToPlay.colour} ${gameData.userCardToPlay.category} `
     } else if (gameData.userCardToPlay.category === 'number') {
-      cardDetails = ` played a ${gameData.userCardToPlay.colour} ${gameData.userCardToPlay.rank}.`
+      cardDetails = ` played a ${gameData.userCardToPlay.colour} ${gameData.userCardToPlay.rank}`
     }
     messageToAllPlayers = playerName + cardDetails;
 
@@ -466,6 +466,9 @@ const initGameController = (db) => {
     // 9. Add player message to object
     hiddenGameObjAll.message = messageToAllPlayers;
     
+    // Add latest discarded card to object
+    hiddenGameObjAll.latestDiscard = await gameData.userCardToPlay;
+
     // 10. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
@@ -539,7 +542,7 @@ const initGameController = (db) => {
         playerName = latestGameObj.playersData[j].username;
       }
     }
-    messageToAllPlayers = `${playerName} skipped their turn.`;
+    messageToAllPlayers = `${playerName} skipped their turn`;
 
     // Create new object so that data can be hidden without affecting data in server
     let hiddenGameObjAll =  JSON.parse(JSON.stringify(latestGameObj));
@@ -551,6 +554,8 @@ const initGameController = (db) => {
     // 7. Add player message to object
     hiddenGameObjAll.message = messageToAllPlayers;
     
+    // Add latest discarded card to object
+    hiddenGameObjAll.latestDiscard = await latestGameObj.discardCardPile[discardCardPile.length - 1];
 
     // 8. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);

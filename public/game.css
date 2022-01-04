@@ -11,6 +11,38 @@ body {
   display: none;
 }
 
+#game-order {
+  position: absolute;
+  left: 50px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+#order-title {
+  color: rgb(0, 0, 0);
+  font-size: 24px;
+  text-shadow: 2px 1px white, 0 1px white, 1px 0 white, 0 -1px white;
+  font-family: "Cabin", sans-serif;
+  text-decoration: underline;
+}
+
+#name0 {
+  color: yellow;
+  font-size: x-large;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-family: "Cabin", sans-serif;
+}
+
+#name1,
+#name2,
+#name3 {
+  color: white;
+  font-size: 18px;
+  text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-family: "Cabin", sans-serif;
+}
+
 #opponent-container-1 {
   position: fixed;
   left: 13%;

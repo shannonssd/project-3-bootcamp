@@ -19,6 +19,8 @@ let userCardToPlay = [];
 let alteredPlayerHand = [];
 // Global variable to store index of previously selected card
 let previousSelectedCardIndex = '';
+// Global variable to allow for player order display to be modified
+let isGameReversed = false;
 
 /*
  * ========================================================
@@ -52,6 +54,98 @@ const alterBtnVisibility = (gameObj) => {
   }
 };
 
+/*
+ * ========================================================
+ * ========================================================
+ *
+ *       Logic to show and manipulate player order 
+ *              at top left corner of screen
+ *
+ * ========================================================
+ * ========================================================
+ */
+// Show player order at top left corner 
+const showPlayerOrder = (gameObj) => {
+  // Grab all names elements
+  const name0 = document.getElementById('name0');
+  const name1 = document.getElementById('name1');
+  const name2 = document.getElementById('name2');
+  const name3 = document.getElementById('name3');
+ 
+  if (gameObj.playersLoggedIn === 1) {
+    name0.innerText = `${gameObj.playersData[0].username}`;
+  };
+
+  if (gameObj.playersLoggedIn === 2) {
+    name0.innerText = `${gameObj.playersData[0].username}`;
+    name1.innerText = `${gameObj.playersData[1].username}`;
+  } 
+  
+  if (gameObj.playersLoggedIn === 3) {
+    name0.innerText = `${gameObj.playersData[0].username}`;
+    name1.innerText = `${gameObj.playersData[1].username}`;
+    name2.innerText = `${gameObj.playersData[2].username}`;
+  } 
+
+  if (gameObj.playersLoggedIn === 4) {
+    name0.innerText = `${gameObj.playersData[0].username}`;
+    name1.innerText = `${gameObj.playersData[1].username}`;
+    name2.innerText = `${gameObj.playersData[2].username}`;
+    name3.innerText = `${gameObj.playersData[3].username}`;
+  } 
+};
+
+// Highlight current player in yellow font
+const updatePlayerOrder = (hiddenGameObjAll) => {
+  console.log(hiddenGameObjAll);
+  const latestDiscardCard = hiddenGameObjAll.latestDiscard;
+  console.log(latestDiscardCard);
+    
+  // Identify card to highlight in yellow
+  let currentTurn = hiddenGameObjAll.playerTurn;
+  
+  // Grab all names elements
+  const name0 = document.getElementById('name0');
+  const name1 = document.getElementById('name1');
+  const name2 = document.getElementById('name2');
+  const name3 = document.getElementById('name3');
+
+  if ((latestDiscardCard.category === 'reverse') && (isGameReversed === false)) {
+    isGameReversed = true;
+    name0.innerText = `${hiddenGameObjAll.playersData[3].username}`;
+    name1.innerText = `${hiddenGameObjAll.playersData[2].username}`;
+    name2.innerText = `${hiddenGameObjAll.playersData[1].username}`;
+    name3.innerText = `${hiddenGameObjAll.playersData[0].username}`;
+  } else if ((latestDiscardCard.category === 'reverse') && (isGameReversed === true)){
+    isGameReversed = false;
+    name0.innerText = `${hiddenGameObjAll.playersData[0].username}`;
+    name1.innerText = `${hiddenGameObjAll.playersData[1].username}`;
+    name2.innerText = `${hiddenGameObjAll.playersData[2].username}`;
+    name3.innerText = `${hiddenGameObjAll.playersData[3].username}`;
+  }
+  
+  // As long as game is reversed, reverse currentTurn index to correctly highlight current players turn in yellow
+  if (isGameReversed === true) {
+    currentTurn = 3 - currentTurn;
+  }
+
+  // // Grab all name elements to manipulate together
+  let otherNamesArr = [0, 1, 2, 3];
+  otherNamesArr = otherNamesArr.filter((n) => n !== currentTurn)
+  console.log(otherNamesArr);
+  
+  // If not players turn, change colour to white
+  for(let k = 0; k < otherNamesArr.length; k +=1) {
+    document.getElementById(`name${otherNamesArr[k]}`).style.color = 'white'; 
+    document.getElementById(`name${otherNamesArr[k]}`).style.fontSize = 'initial'; 
+  }
+  // Grab element to be highlighted
+  const nameToHighlight = document.getElementById(`name${currentTurn}`); 
+  
+  // If players turn, change colour to yellow
+  nameToHighlight.style.color = 'yellow';
+  nameToHighlight.style.fontSize = 'x-large';
+};
 /*
  * ========================================================
  * ========================================================
@@ -189,6 +283,8 @@ socket.on('Valid play', (hiddenGameObj) => {
     // Update game message to players
     const userMessageToPlayers = document.getElementById('user-message');
     userMessageToPlayers.innerText = `${hiddenGameObjAll.message}`;
+    // Update player order display
+    updatePlayerOrder(hiddenGameObjAll);
   });
 
 /*
@@ -525,41 +621,44 @@ const generateOpponentCardsAndName = (gameObj) => {
   const opponentCardCount3 = document.querySelector('.opponent-card-count3');
   if (gameObj.playersLoggedIn === 2) {
     opponentContainerCard1.innerText = '';
-      // Generate opponents cards- Next player:
-      for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
-        opponentContainerCard1.appendChild(createOpponentCard());
-        // Only display max of 7 cards
-        if (i >= 6) {
-          break;
-        }
+    // Generate opponents cards- Next player:
+    for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+      opponentContainerCard1.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i >= 6) {
+        break;
       }
-      opponentName1.innerText = `${opponentNamesInOrder[1]}`
-      opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
-    } else if (gameObj.playersLoggedIn === 3) {
-      opponentContainerCard1.innerText = '';
-      opponentContainerCard2.innerText = '';
+    }
+    opponentName1.innerText = `${opponentNamesInOrder[1]}`
+    opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+  }  
+  
+  if (gameObj.playersLoggedIn === 3) {
+    opponentContainerCard1.innerText = '';
+    opponentContainerCard2.innerText = '';
 
-      // Generate opponents cards- Next player:
-      for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
-        opponentContainerCard1.appendChild(createOpponentCard());
-        // Only display max of 7 cards
-        if (i >= 6) {
-          break;
-        }
+    // Generate opponents cards- Next player:
+    for (let i = 0; i < opponentHandsInOrder[1]; i += 1){
+      opponentContainerCard1.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i >= 6) {
+        break;
       }
-      // Generate opponents cards- 3rd player:
-      for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
-        opponentContainerCard2.appendChild(createOpponentCard());
-        // Only display max of 7 cards
-        if (i >= 6) {
-          break;
-        }
-      } 
-      opponentName1.innerText = `${opponentNamesInOrder[1]}`
-      opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
-      opponentName2.innerText = `${opponentNamesInOrder[2]}`
-      opponentCardCount2.innerText = `Cards: ${opponentHandsInOrder[2]}`;
+    }
+    // Generate opponents cards- 3rd player:
+    for (let i = 0; i < opponentHandsInOrder[2]; i += 1){
+      opponentContainerCard2.appendChild(createOpponentCard());
+      // Only display max of 7 cards
+      if (i >= 6) {
+        break;
+      }
     } 
+    opponentName1.innerText = `${opponentNamesInOrder[1]}`
+    opponentCardCount1.innerText = `Cards: ${opponentHandsInOrder[1]}`;
+    opponentName2.innerText = `${opponentNamesInOrder[2]}`
+    opponentCardCount2.innerText = `Cards: ${opponentHandsInOrder[2]}`;
+  } 
+
   // Once 4 players have joined, show opponent names and no of cards to everyone
   if (gameObj.playersLoggedIn === 4) {
     opponentContainerCard1.innerText = '';
@@ -699,8 +798,8 @@ const loginAttempt = () => {
       gameDisplay.style.display = 'block';
       // On response from server - Alter button visibility based on socket id
       alterBtnVisibility(gameObj)
+      // Show users cards 
       generateDiscardAndUserCards(gameObj);
-      
       let usernameDisplay = ''; 
       // Find username
       for (let j = 0; j < gameObj.playersData.length; j += 1) {
@@ -715,6 +814,8 @@ const loginAttempt = () => {
 
     socket.on('New login', (gameObj) => {
       generateOpponentCardsAndName(gameObj);
+      // Show order of players at top left corner
+      showPlayerOrder(gameObj);
     });
 
     // Inform user if username or password was incorrect
