@@ -146,6 +146,7 @@ const updatePlayerOrder = (hiddenGameObjAll) => {
   nameToHighlight.style.color = 'yellow';
   nameToHighlight.style.fontSize = 'x-large';
 };
+
 /*
  * ========================================================
  * ========================================================
@@ -171,7 +172,7 @@ socket.on('Game over', (data) => {
  * ========================================================
  * ========================================================
  *
- *          Game Buttons Helper Functions
+ *            Game Buttons Callback Functions
  *
  * ========================================================
  * ========================================================
@@ -404,9 +405,6 @@ const cardClick = (index, playerHand) => {
   }
 }; 
 
-// Global variable to give each play message class unique name
-let playMessageCount = 0;
-
 // Genereate user cards using DOM
 const createUserCard = (playerHand) => {
   const allCardContainer = document.getElementById('user-container-all-cards');
@@ -563,9 +561,9 @@ const createUserCard = (playerHand) => {
       allCardContainer.appendChild(cardContainer);
     }
   }
-  
 };
 
+// Callback function to create discard pile and user cards display
 const generateDiscardAndUserCards = (gameObj) => {
   // Generate and append discard pile card
   createDiscardCard(gameObj.discardCardPile);
@@ -581,6 +579,7 @@ const generateDiscardAndUserCards = (gameObj) => {
   
 };
 
+// Callback function to create opponent cards display and show opponents names
 const generateOpponentCardsAndName = (gameObj) => {
   // Inform players that they need to wait for 4 players
   const userMessage = document.getElementById('user-message');

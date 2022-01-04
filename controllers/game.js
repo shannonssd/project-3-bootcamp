@@ -139,7 +139,11 @@ var makeDeck = () => {
 const initGameController = (db) => {
   const { Op } = db.Sequelize;
 
-  // When new user connects, add users socket id to an array
+  /*
+  * ========================================================
+  *  When new user connects, add users socket id to an array
+  * ========================================================
+  */
   const addUsersSocketId = async (socket) => {
     playersData.push({});
     // Add new players socket id to new index in array
@@ -177,8 +181,12 @@ const initGameController = (db) => {
       }
     } 
   };
-
-  // When user tries to signup: 
+  /*
+  * ========================================================
+  *   When user tries to signup, check if username exists,
+  *                else store data in DB
+  * ========================================================
+  */
   const signUpAttemptDb = async (socket, data) => {
     const { username } = data;
     const { password } = data;
@@ -204,7 +212,12 @@ const initGameController = (db) => {
     }
   };
 
-  // When user tries to login: 
+  /*
+  * ========================================================
+  *   When user tries to login, authenticate login 
+  *       details and let user know the outcome
+  * ========================================================
+  */
   const loginAttemptDb = async (socket, data) => {
     const { username } = data;
     const { password } = data;
@@ -289,7 +302,11 @@ const initGameController = (db) => {
     }
   };
 
-  // Check for valid number card
+  /*
+  * ========================================================
+  *   Callback function to check if card played is valid
+  * ========================================================
+  */
   const checkIfPlayIsValid = async (card, id) => {
     // const card = cardArr[0];
     let isTurnValid = false;
@@ -327,6 +344,13 @@ const initGameController = (db) => {
     }
   }; 
 
+  /*
+  * ========================================================
+  *   If card played is valid, update DB with relevant info,
+  *    inform players of card played, update opponent 
+  *                cards and players cards
+  * ========================================================
+  */
   const ifPlayValid = async (socket, gameData) => {
     // 1. Access game data in DB based on game id
     const game = await db.Game.findByPk(gameData.currentGameId);
@@ -466,15 +490,20 @@ const initGameController = (db) => {
     // 9. Add player message to object
     hiddenGameObjAll.message = messageToAllPlayers;
     
-    // Add latest discarded card to object
+    // 10. Add latest discarded card to object
     hiddenGameObjAll.latestDiscard = await gameData.userCardToPlay;
 
-    // 10. Inform ALL player if round is complete & update opponents cards
+    // 11. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
   };
 
-  // When user tries to play a hand, evaluate attempt 
+  /*
+  * ========================================================
+  *    When user tries to play a hand, evaluate attempt 
+  *            and notify them of outcome
+  * ========================================================
+  */
   const evaluateChoice = async (socket, gameData) => {
     // Functions to check for various valid card plays
     const isCardValid = await checkIfPlayIsValid(gameData.userCardToPlay, gameData.currentGameId);
@@ -487,6 +516,15 @@ const initGameController = (db) => {
       ifPlayValid(socket, gameData);
     }
   };
+
+  /*
+  * ========================================================
+  *    When user skips turn, add card to their hand and 
+  *             update DB with relevant info,
+  *    inform players of card played, update opponent 
+  *                cards and players cards
+  * ========================================================
+  */
   const skipTurn = async (socket, gameData) => {
     // 1. Access game data in DB based on game id
     const game = await db.Game.findByPk(gameData.currentGameId);
@@ -554,10 +592,10 @@ const initGameController = (db) => {
     // 7. Add player message to object
     hiddenGameObjAll.message = messageToAllPlayers;
     
-    // Add latest discarded card to object
+    // 8. Add latest discarded card to object
     hiddenGameObjAll.latestDiscard = await latestGameObj.discardCardPile[discardCardPile.length - 1];
 
-    // 8. Inform ALL player if round is complete & update opponents cards
+    // 9. Inform ALL player if round is complete & update opponents cards
     socket.broadcast.emit('Round completed', hiddenGameObjAll);
     socket.emit('Round completed', hiddenGameObjAll);
   }
