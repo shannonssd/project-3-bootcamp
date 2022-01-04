@@ -12,9 +12,11 @@ body {
   justify-content: center;
   align-items: center;
   background-image: url("uno-pic.jpeg");
+  background-size: cover;
 }
 
 #login-container {
+  margin-top: 100px;
   padding: 15px;
   width: 60vw;
   height: 80vh;
@@ -26,11 +28,12 @@ body {
 
 #login-title {
   color: rgb(215, 38, 0);
-  font-size: 80px;
+  font-size: 70px;
   font-family: "Cabin", sans-serif;
   display: flex;
   justify-content: center;
   text-shadow: 6px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  letter-spacing: 5px;
 }
 #uno-title {
   display: flex;
@@ -39,7 +42,7 @@ body {
 
 .uno {
   color: #ffee00;
-  font-size: 180px;
+  font-size: 172px;
   text-shadow: 15px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
   font-family: "Cabin", sans-serif;
   letter-spacing: 4px;
@@ -120,4 +123,26 @@ body {
 
 #login-btn:hover {
   background-color: #008cff;
+}
+
+@media screen and (max-width: 1024px) {
+  #login-title {
+    margin-top: 35px;
+    font-size: 60px;
+    text-shadow: 5px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+    letter-spacing: 3px;
+  }
+
+  .uno {
+    font-size: 150px;
+    text-shadow: 11px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+    letter-spacing: 3px;
+  }
+
+  #username,
+  #password,
+  #signup-btn,
+  #login-btn {
+    font-size: 20px;
+  }
 }

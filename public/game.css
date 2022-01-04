@@ -9,6 +9,7 @@ body {
   background-image: url("uno-pic.jpeg");
   height: 100%;
   display: none;
+  background-size: cover;
 }
 
 #game-order {
@@ -260,4 +261,48 @@ body {
 
 #skip-button:hover {
   background-color: #ff0000;
+}
+
+@media screen and (max-width: 1024px) {
+  #game-order {
+    left: 28px;
+    top: 15px;
+  }
+  #opponent-container-1 {
+    left: 3%;
+    top: 30%;
+  }
+  #opponent-container-3 {
+    right: 3%;
+    top: 30%;
+  }
+
+  .opponent-card-outer {
+    height: 82px;
+    width: 52px;
+  }
+
+  .opponent-card-inner {
+    height: 74px;
+    width: 44px;
+  }
+
+  .card-text {
+    font-size: 10px;
+    text-shadow: 1px 1px 1px black;
+  }
+
+  .opponent-name1,
+  .opponent-name2,
+  .opponent-name3 {
+    font-size: 20px;
+    text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  }
+
+  .opponent-card-count1,
+  .opponent-card-count2,
+  .opponent-card-count3 {
+    font-size: 20px;
+    text-shadow: 2px 1px black, 0 1px black, 1px 0 black, 0 -1px black;
+  }
 }
